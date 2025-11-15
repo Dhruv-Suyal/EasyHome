@@ -75,7 +75,7 @@ app.use(storeRouter);
 app.use('/host', hostRouter);
 app.use('/', errorPage);
 
-const port = 3001;
+const port = process.env.PORT || 3000;
 
 mongoose.connect(mongo_Url).then(()=>{
     console.log("Mongoose Connected");
