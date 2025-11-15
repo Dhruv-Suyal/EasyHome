@@ -1,0 +1,129 @@
+<%- include('../partials/header') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+   <%- include('../partials/nav.ejs') %>
+    
+    <div class="container mx-auto px-4 py-12">
+        <div class="text-center space-y-4 mb-16 hidden lg:block">
+            <h1 class="text-4xl font-bold text-white/90">
+                Discover Our Premium Properties
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Explore our handpicked selection of luxury homes and unique stays around the world
+            </p>
+        </div>
+
+        <div class="text-center space-y-3 mb-8 lg:hidden">
+            <h1 class="text-2xl font-bold text-white/90">
+                Premium Properties
+            </h1>
+            <p class="text-gray-400 text-sm">
+                Find your perfect stay
+            </p>
+        </div>
+
+        <!-- Desktop Grid (2 columns) -->
+        <div class="hidden lg:grid grid-cols-2 gap-8 max-w-7xl mx-auto">
+            <% registeredHome.forEach((Home)=>{ %>
+                <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group">
+                    <div class="relative aspect-video overflow-hidden">
+                        <img 
+                            src="<%= Home.photoUrl %>" 
+                            alt="<%=Home.houseName%>"
+                            class="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                        >
+                        <div class="absolute top-4 right-4">
+                            <span class="px-4 py-2 rounded-full text-sm backdrop-blur-md bg-black/50 text-white/90 border border-white/10">
+                                ₹<%= Home.price %> per night
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-8 space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <h2 class="text-2xl font-bold text-white/90"><%=Home.houseName%></h2>
+                                <span class="flex items-center text-white/70">
+                                    <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                                    </svg>
+                                    <%= Home.location %>
+                                </span>
+                            </div>
+                            <p class="text-gray-400 line-clamp-2">
+                                <%= Home.description %>
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4 py-4 border-t border-white/10">
+                            <div class="text-center">
+                                <span class="block text-white/90 font-medium"><%= Home.bedrooms %></span>
+                                <span class="text-sm text-gray-400">Bedrooms</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="block text-white/90 font-medium"><%= Home.bathrooms %></span>
+                                <span class="text-sm text-gray-400">Bathrooms</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="block text-white/90 font-medium"><%= Home.squareFt %></span>
+                                <span class="text-sm text-gray-400">Sq. Ft.</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="flex items-center text-yellow-400">
+                                    ★★★★★
+                                    <span class="ml-1 text-sm text-white/70">5.0</span>
+                                </span>
+                            </div>
+                            <a href="/booking/<%= Home._id %>" class="px-6 py-3 rounded-lg text-white font-medium backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Mobile Grid (1 column, minimal info) -->
+        <div class="lg:hidden grid grid-cols-1 gap-4 max-w-md mx-auto">
+            <% registeredHome.forEach((Home)=>{ %>
+                <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-[1.02] group">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img 
+                            src="<%= Home.photoUrl %>" 
+                            alt="<%=Home.houseName%>"
+                            class="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                        >
+                        <div class="absolute top-2 right-2">
+                            <span class="px-3 py-1.5 rounded-full text-xs backdrop-blur-md bg-black/60 text-white/90 border border-white/10">
+                                ₹<%= Home.price %>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 space-y-2">
+                        <div>
+                            <h2 class="text-base font-bold text-white/90 line-clamp-1"><%=Home.houseName%></h2>
+                            <p class="text-gray-400 line-clamp-1 text-xs">
+                                <%= Home.location %>
+                            </p>
+                        </div>
+                        
+                        <p class="text-gray-400 line-clamp-2 text-xs">
+                            <%= Home.description %>
+                        </p>
+
+                        <div class="pt-2 border-t border-white/10">
+                            <a href="/booking/<%= Home._id %>" class="block w-full px-4 py-2 rounded-lg text-white font-medium text-center text-sm backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>

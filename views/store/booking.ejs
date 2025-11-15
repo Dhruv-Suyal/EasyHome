@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+    <%- include('../partials/nav') %>
+    
+    <div class="container mx-auto px-4 py-12">
+        <div class="text-center space-y-8 mb-16">
+            <h1 class="text-4xl font-bold text-white/90">
+                My Total Bookings
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                View and manage all your property reservations
+            </p>
+        </div>
+
+        <div class="max-w-2xl mx-auto">
+            <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden shadow-xl p-12">
+                <div class="text-center space-y-6">
+                    <svg class="w-20 h-20 mx-auto text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <h2 class="text-2xl font-bold text-white/90">No Bookings Yet</h2>
+                    <p class="text-gray-400">You haven't made any bookings. Start exploring our properties today!</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="/" class="inline-block px-8 py-3 rounded-lg text-white font-medium backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
+                    Explore Properties
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

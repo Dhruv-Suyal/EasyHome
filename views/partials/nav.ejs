@@ -1,0 +1,93 @@
+<nav class="backdrop-blur-md bg-black/30 border-b border-white/10 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <!-- Logo Section -->
+            <div class="flex items-center space-x-8">
+                <a class="<%= currentPage === 'home' ? 'bg-white/10': ''%> text-white font-bold text-xl px-6 py-2.5 rounded-lg backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/">
+                    EasyHome
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <% if(isLoggedIn){ %>
+                        <% if(user && user.userType === 'guest'){ %>
+                            <a class="<%= currentPage === 'home-list' ? 'bg-white/10': ''%> text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/index">Home List</a>
+                            <a class="<%= currentPage === 'favourites' ? 'bg-white/10': ''%> text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/favourites">Favourites</a>
+                            <a class="<%= currentPage === 'booking' ? 'bg-white/10': ''%> text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/booking">Booking</a>
+                        <% }else{ %>
+                            <a class="<%= currentPage === 'host-home-list' ? 'bg-white/10': ''%> text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/host/home-list">Host Homes</a>
+                            <a class="<%= currentPage === 'addHome' ? 'bg-white/10': ''%> text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/host/add-home">Add Home</a>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Auth Section -->
+            <div class="flex items-center gap-4">
+                <!-- Desktop Auth -->
+                <div class="hidden lg:flex items-center">
+                    <% if(isLoggedIn){ %>
+                        <form action="/logout" method="POST">
+                            <button class="text-white/90 px-6 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg bg-white/10 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/20">
+                                Logout
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <div class="flex items-center space-x-4">
+                            <a class="text-white/90 px-4 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/signUp">Create Account</a>
+                            <a class="text-white/90 px-6 py-2.5 rounded-lg text-sm font-medium backdrop-blur-lg bg-white/10 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/20" href="/login">Login</a>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Mobile: Show hamburger only when logged in, otherwise show auth buttons -->
+                <% if(isLoggedIn){ %>
+                    <!-- Mobile Hamburger Menu (Only for logged in users) -->
+                    <button onclick="toggleMenu()" class="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg backdrop-blur-lg bg-white/10 border border-white/10 hover:bg-white/20 transition-all">
+                        <svg id="hamburger-icon" class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <svg id="close-icon" class="hidden w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                <% } else { %>
+                    <!-- Mobile Auth Buttons (Only for non-logged in users) -->
+                    <div class="lg:hidden flex items-center space-x-2">
+                        <a class="text-white/90 px-3 py-2 rounded-lg text-xs font-medium backdrop-blur-lg border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10" href="/signUp">Sign Up</a>
+                        <a class="text-white/90 px-4 py-2 rounded-lg text-xs font-medium backdrop-blur-lg bg-white/10 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/20" href="/login">Login</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Only shown for logged in users) -->
+        <% if(isLoggedIn){ %>
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 space-y-2 border-t border-white/10">
+                <% if(user && user.userType === 'guest'){ %>
+                    <a href="/index" class="block px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">Home List</a>
+                    <a href="/favourites" class="block px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">Favourites</a>
+                    <a href="/booking" class="block px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">Booking</a>
+                <% }else{ %>
+                    <a href="/host/home-list" class="block px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">Host Homes</a>
+                    <a href="/host/add-home" class="block px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">Add Home</a>
+                <% } %>
+                <form action="/logout" method="POST" class="pt-2">
+                    <button class="w-full px-4 py-3 text-sm text-white/90 rounded-lg backdrop-blur-lg bg-white/10 border border-white/10 hover:bg-white/20 transition-all">Logout</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger-icon');
+            const close = document.getElementById('close-icon');
+            
+            menu.classList.toggle('hidden');
+            hamburger.classList.toggle('hidden');
+            close.classList.toggle('hidden');
+        }
+    </script>
+</nav>
