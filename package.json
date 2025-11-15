@@ -13,7 +13,8 @@
   "description": "",
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.17",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "tailwindcss": "^4.1.17"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -27,7 +28,6 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
     "multer": "^2.0.2",
-    "session": "^0.1.0",
-    "tailwindcss": "^4.1.13"
+    "session": "^0.1.0"
   }
 }
