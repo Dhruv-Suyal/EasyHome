@@ -27,6 +27,7 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
     "multer": "^2.0.2",
-    "session": "^0.1.0"
+    "session": "^0.1.0",
+    "tailwindcss": "^4.1.17"
   }
 }
