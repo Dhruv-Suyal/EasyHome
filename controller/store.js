@@ -31,7 +31,7 @@ exports.postFavouriteList = async (req, res, next)=>{
 exports.getIndex = (req, res, next)=>{
     Home.find().then
     ((registeredHome)=>{
-         res.render('store/index', {registeredHome:registeredHome, pageTittle:'Airbnb Home', currentPage:'home', isLoggedIn:req.isLoggedIn, user: req.session.user});
+         res.render('store/index', {registeredHome:registeredHome, pageTittle:'EasyHome', currentPage:'Easyhome', isLoggedIn:req.isLoggedIn, user: req.session.user});
     })
 }
 

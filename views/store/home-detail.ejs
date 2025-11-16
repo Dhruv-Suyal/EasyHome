@@ -1,17 +1,17 @@
 <%- include('../partials/header') %>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen scroll-smooth">
    <%- include('../partials/nav.ejs') %>
     
-    <div class="container mx-auto px-4 py-12">
-        <div class="text-center space-y-4 mb-12">
-            <h1 class="text-4xl font-bold text-white/90">
+    <div class="container mx-auto px-3 sm:px-4 py-6 sm:py-12">
+        <div class="text-center space-y-2 sm:space-y-4 mb-8 sm:mb-12">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90">
                 Property Details
             </h1>
         </div>
 
         <div class="max-w-5xl mx-auto">
-            <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden shadow-xl">
+            <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
                 <!-- Image Section -->
                 <div class="relative aspect-video overflow-hidden group">
                     <img 
@@ -19,85 +19,85 @@
                         alt="<%=Home.houseName%>"
                         class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
                     >
-                    <div class="absolute top-4 right-4">
-                        <span class="px-4 py-2 rounded-full text-sm backdrop-blur-md bg-black/50 text-white/90 border border-white/10">
-                            ₹<%= Home.price %> per night
+                    <div class="absolute top-2 sm:top-4 right-2 sm:right-4">
+                        <span class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm backdrop-blur-md bg-black/50 text-white/90 border border-white/10">
+                            ₹<%= Home.price %>/night
                         </span>
                     </div>
                 </div>
 
                 <!-- Details Section -->
-                <div class="p-8 space-y-8">
+                <div class="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
                     <!-- Title and Location -->
-                    <div class="space-y-4 pb-6 border-b border-white/10">
-                        <div class="flex items-start justify-between">
+                    <div class="space-y-3 sm:space-y-4 pb-4 sm:pb-6 border-b border-white/10">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div class="flex-1">
-                                <h2 class="text-3xl font-bold text-white/90"><%=Home.houseName%></h2>
-                                <div class="flex items-center text-white/70 text-lg mt-3">
-                                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white/90"><%=Home.houseName%></h2>
+                                <div class="flex items-center text-white/70 text-sm sm:text-base md:text-lg mt-2 sm:mt-3 gap-1">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
                                     </svg>
-                                    <%= Home.location %>
+                                    <span class="line-clamp-1"><%= Home.location %></span>
                                 </div>
                             </div>
-                            <div>
+                            <div class="flex-shrink-0">
                                 <%- include("../partials/favourites", {Home:Home}) %>
                             </div>
                         </div>
                     </div>
 
                     <!-- Price Section -->
-                    <div class="space-y-4 pb-6 border-b border-white/10">
-                        <p class="text-gray-400 text-sm">Price per night</p>
-                        <p class="text-4xl font-bold text-white/90">₹<%= Home.price %></p>
+                    <div class="space-y-2 sm:space-y-4 pb-4 sm:pb-6 border-b border-white/10">
+                        <p class="text-gray-400 text-xs sm:text-sm">Price per night</p>
+                        <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90">₹<%= Home.price %></p>
                     </div>
 
                     <!-- Description -->
-                    <div class="space-y-4 pb-6 border-b border-white/10">
-                        <h3 class="text-xl font-bold text-white/90">About this property</h3>
-                        <p class="text-gray-400 leading-relaxed">
+                    <div class="space-y-2 sm:space-y-4 pb-4 sm:pb-6 border-b border-white/10">
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-white/90">About this property</h3>
+                        <p class="text-gray-400 leading-relaxed text-xs sm:text-sm md:text-base">
                             <%= Home.description %>
                         </p>
                     </div>
 
                     <!-- Property Features Grid -->
-                    <div class="space-y-4 pb-6 border-b border-white/10">
-                        <h3 class="text-xl font-bold text-white/90">Property Features</h3>
-                        <div class="grid grid-cols-3 gap-6">
+                    <div class="space-y-3 sm:space-y-4 pb-4 sm:pb-6 border-b border-white/10">
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-white/90">Property Features</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                             <!-- Bedrooms -->
-                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6">
-                                <div class="flex items-center justify-between">
+                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+                                <div class="flex items-center justify-between sm:flex-col sm:items-start gap-3">
                                     <div>
-                                        <p class="text-gray-400 text-sm">Bedrooms</p>
-                                        <p class="text-3xl font-bold text-white/90 mt-2"><%= Home.bedrooms %></p>
+                                        <p class="text-gray-400 text-xs sm:text-sm">Bedrooms</p>
+                                        <p class="text-xl sm:text-2xl md:text-3xl font-bold text-white/90 mt-1 sm:mt-2"><%= Home.bedrooms %></p>
                                     </div>
-                                    <svg class="w-10 h-10 text-blue-400/60" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-blue-400/60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                                     </svg>
                                 </div>
                             </div>
 
                             <!-- Bathrooms -->
-                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6">
-                                <div class="flex items-center justify-between">
+                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+                                <div class="flex items-center justify-between sm:flex-col sm:items-start gap-3">
                                     <div>
-                                        <p class="text-gray-400 text-sm">Bathrooms</p>
-                                        <p class="text-3xl font-bold text-white/90 mt-2"><%= Home.bathrooms %></p>
+                                        <p class="text-gray-400 text-xs sm:text-sm">Bathrooms</p>
+                                        <p class="text-xl sm:text-2xl md:text-3xl font-bold text-white/90 mt-1 sm:mt-2"><%= Home.bathrooms %></p>
                                     </div>
-                                    <svg class="w-10 h-10 text-blue-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-blue-400/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6V4m12 2v-2m-6 6v10m0 0H8m4 0h4m-6 0l1-6h4l1 6h-6z"/>
                                     </svg>
                                 </div>
                             </div>
 
                             <!-- Square Feet -->
-                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6">
-                                <div class="flex items-center justify-between">
+                            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+                                <div class="flex items-center justify-between sm:flex-col sm:items-start gap-3">
                                     <div>
-                                        <p class="text-gray-400 text-sm">Square Feet</p>
-                                        <p class="text-3xl font-bold text-white/90 mt-2"><%= Home.squareFt %></p>
+                                        <p class="text-gray-400 text-xs sm:text-sm">Square Feet</p>
+                                        <p class="text-xl sm:text-2xl md:text-3xl font-bold text-white/90 mt-1 sm:mt-2"><%= Home.squareFt %></p>
                                     </div>
-                                    <svg class="w-10 h-10 text-blue-400/60" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-blue-400/60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
                                     </svg>
                                 </div>
@@ -106,11 +106,11 @@
                     </div>
 
                     <!-- Booking Button -->
-                    <div class="flex gap-4">
-                        <a href="/booking/<%= Home._id %>" class="flex-1 px-6 py-4 rounded-lg text-white font-medium text-center backdrop-blur-lg bg-emerald-600/80 border border-emerald-500/30 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-emerald-600">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                        <a href="/booking/<%= Home._id %>" class="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-center text-sm sm:text-base backdrop-blur-lg bg-emerald-600/80 border border-emerald-500/30 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-emerald-600">
                             Book Now
                         </a>
-                        <button class="px-6 py-4 rounded-lg text-white font-medium backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
+                        <button class="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-sm sm:text-base backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
                             Share
                         </button>
                     </div>
