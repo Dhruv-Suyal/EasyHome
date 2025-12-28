@@ -1,4 +1,9 @@
- <form action="/favourites" method="POST">
-                            <button class="bg-green-600 p-3 rounded-2xl text-amber-50 mb-5 cursor-pointer" type="submit">Add to favourites</button>
+ <form action="/favourites" method="POST" class="inline-block">
+                            <% const isFavourite = favouriteHomes && favouriteHomes.favourite && favouriteHomes.favourite.some(fav => fav._id.toString() === Home._id.toString()); %>
+                            <button class="group relative p-2.5 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-lg <%= isFavourite ? 'bg-red-500/30 border border-red-500/50' : 'bg-white/10 border border-white/20 hover:bg-red-500/20 hover:border-red-500/50' %>" type="submit" title="<%= isFavourite ? 'Remove from Favourites' : 'Add to Favourites' %>">
+                                <svg class="w-5 h-5 transition-colors <%= isFavourite ? 'fill-red-400 text-red-400' : 'text-white/70 group-hover:text-red-400 fill-none' %>" stroke="<%= isFavourite ? 'none' : 'currentColor' %>" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
                             <input type="hidden" name="homeId" value="<%= Home._id %>">
 </form>
