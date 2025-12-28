@@ -1,5 +1,6 @@
 const { check, validationResult } = require("express-validator");
 const Home = require("../models/data");
+const Booking = require("../models/booking");
 
 exports.addHome = (req, res, next)=>{
     if(!req.isLoggedIn){
@@ -123,7 +124,7 @@ exports.sumbitHome = [
     .withMessage('Price must be a number'),
 
     check('description')
-    .isLength({min: 12, max:400})
+    .isLength({min: 12, max:1000})
     .withMessage('Description must be between 12 and 400 characters long'),
 
     check('bedrooms')
@@ -150,7 +151,7 @@ exports.sumbitHome = [
         if(!req.isLoggedIn){
             return res.redirect('/login');
         }
-        console.log(req.body);
+        console.log(req.file);
         const {homeName, pricePerNight, location, description, bedrooms, bathrooms, squareFt} = req.body;
         const errors = validationResult(req);
         if(!errors.isEmpty()){
@@ -173,8 +174,51 @@ exports.hostHomeList =(req, res, next)=>{
     if(!req.isLoggedIn){
         return res.redirect('/login');
     }
-    Home.find({host: req.session.user._id}).
+    Home.find({host: req.session.user._id}).sort({createdAt: -1}).
     then((registeredHome)=>{
          res.render('host/host-home-list', {registeredHome:registeredHome, pageTittle:'Host home List', currentPage:'host-home-list', isLoggedIn:req.isLoggedIn, user: req.session.user});
     });
+}
+
+exports.getMyBookings = (req, res, next)=>{
+    console.log("Get my bookings");
+    if(!req.isLoggedIn) {
+        return res.redirect('/login');
+    }
+    const userId = req.session.user._id;
+    Home.find({host: userId}).sort({createdAt: -1}).then((homes)=>{
+         if (homes.length === 0) {
+            return res.render('host/host-bookings', {
+                bookings: [],
+                pageTittle: 'Home Bookings',
+                currentPage: 'mybooking',
+                isLoggedIn: req.isLoggedIn,
+                user: req.session.user
+            });
+        }
+        const homeId = homes.map(home => home._id);
+    return Booking.find({home: {$in: homeId}, status: { $in: ["Pending", "Confirmed"] } }).populate('user').populate('home').sort({createdAt: -1}).then((bookings)=>{
+        res.render('host/host-bookings', {bookings: bookings, pageTittle:'Home Bookings', currentPage:'mybooking', isLoggedIn:req.isLoggedIn, user: req.session.user});
+    }).catch(err=>{
+        console.log(err);
+    });
+})
+}
+
+exports.postConfirmBookings = (req, res, next)=>{
+    const bookingId = req.params.bookingId;
+    Booking.findById(bookingId).then((booking)=>{
+        if(!booking){
+            console.log("Booking not found");
+            return res.redirect('/host/mybookings');
+        }
+        booking.status = 'Confirmed';
+        return booking.save().then(()=>{
+            console.log("Booking confirmed successfully");
+            res.redirect('/host/mybookings');
+        }).catch(err=>{
+            console.log("Error while confirming booking", err);
+        });
+    })
+    console.log(bookingId);
 }

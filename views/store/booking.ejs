@@ -1,35 +1,304 @@
 <%- include('../partials/header') %>
+<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/themes/dark.css">
+<script src="https://unpkg.com/flatpickr"></script>
+    <style>
+.flatpickr-calendar {
+  background: rgba(15, 15, 25, .85);
+  backdrop-filter: blur(16px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+}
+
+.flatpickr-day {
+  color: white;
+  border-radius: 10px;
+}
+
+.flatpickr-day:hover {
+  background: rgba(255,255,255,.15);
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: linear-gradient(135deg,#34d399,#10b981);
+  color: white;
+}
+
+.flatpickr-day.inRange {
+  background: rgba(16,185,129,.25);
+  color: #a7f3d0;
+}
+
+.flatpickr-months,
+.flatpickr-weekdays {
+  color: white;
+}
+
+span.flatpickr-weekday {
+  color: #a1a1aa;
+}
+</style>
+
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
-    <%- include('../partials/nav') %>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen scroll-smooth">
+   <%- include('../partials/nav.ejs') %>
     
-    <div class="container mx-auto px-4 py-12">
-        <div class="text-center space-y-8 mb-16">
-            <h1 class="text-4xl font-bold text-white/90">
-                My Total Bookings
+    <div class="container mx-auto px-3 sm:px-4 py-6 sm:py-12 pt-28 sm:pt-32">
+        <div class="text-center space-y-2 sm:space-y-4 mb-8 sm:mb-12">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90">
+                Complete Your Booking
             </h1>
-            <p class="text-gray-400 max-w-2xl mx-auto">
-                View and manage all your property reservations
+            <p class="text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
+                Fill in your details to confirm your reservation
             </p>
         </div>
 
-        <div class="max-w-2xl mx-auto">
-            <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden shadow-xl p-12">
-                <div class="text-center space-y-6">
-                    <svg class="w-20 h-20 mx-auto text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <h2 class="text-2xl font-bold text-white/90">No Bookings Yet</h2>
-                    <p class="text-gray-400">You haven't made any bookings. Start exploring our properties today!</p>
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            <!-- Booking Form -->
+            <div class="md:col-span-2">
+                <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl p-4 sm:p-6 md:p-8">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white/90 mb-6 sm:mb-8">Booking Details</h2>
+
+                    <%- include('../partials/errors') %>
+                    
+                    <form action="/booking/<%= home._id %>" method="POST" class="space-y-4 sm:space-y-6">
+                        <div class="space-y-2">
+                            <label for="name" class="block text-xs sm:text-sm font-medium text-white/70">Enter your full name</label>
+                            <input 
+                                id="name"
+                                type="name" 
+                                name="name" 
+                                value="<%= user || oldInput.name ? user.name || oldInput.name : '' %>"
+                                placeholder="John Doe"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                                required
+                            >
+                        </div>
+
+                        <!-- Email -->
+                        <div class="space-y-2">
+                            <label for="email" class="block text-xs sm:text-sm font-medium text-white/70">Email Address</label>
+                            <input 
+                                id="email"
+                                type="email" 
+                                name="email" 
+                                value="<%= user || oldInput.email ? user.email || oldInput.email : '' %>"
+                                placeholder="your@email.com"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                                required
+                            >
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="space-y-2">
+                            <label for="phone" class="block text-xs sm:text-sm font-medium text-white/70">Phone Number</label>
+                            <div class="flex gap-2">
+                                <select name="countryCode" class="px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 appearance-none cursor-pointer">
+                                    <option value="+91" class="bg-gray-900 text-white">+91 🇮🇳</option>
+                                    <option value="+1" class="bg-gray-900 text-white">+1 🇺🇸</option>
+                                    <option value="+44" class="bg-gray-900 text-white">+44 🇬🇧</option>
+                                    <option value="+61" class="bg-gray-900 text-white">+61 🇦🇺</option>
+                                </select>
+                                <input 
+                                    id="phone"
+                                    type="tel" 
+                                    name="phone" 
+                                    placeholder="1234567890"
+                                    class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                                    required
+                                    value="<%= oldInput.phone ? oldInput.phone : '' %>"
+                                >
+                            </div>
+                        </div>
+
+                        <input id="dateRange" name="dateRange"placeholder="Select dates (Check-in — Check-out)"
+                            class="w-full px-5 py-3 rounded-2xl bg-white/10 border border-white/20
+                                    text-white placeholder-gray-300
+                                    focus:outline-none focus:ring-2 focus:ring-emerald-400
+                                    shadow-lg backdrop-blur-xl"
+                             required />
+                        <!-- Check-in Date -->
+                            <input 
+                                id="checkInDate"
+                                type="hidden" 
+                                name="checkInDate"
+                                required >
+
+
+                        <!-- Check-out Date -->
+                            <input 
+                                id="checkOut"
+                                type="hidden" 
+                                name="checkOutDate"
+                                required >
+
+                        <!-- Number of People -->
+                        <div class="space-y-2">
+                            <label for="numberOfPeople" class="block text-xs sm:text-sm font-medium text-white/70">Number of People</label>
+                            <input 
+                                id="numberOfPeople"
+                                type="number" 
+                                name="numberOfPeople" 
+                                value="<%= oldInput.numberOfPeople ? oldInput.numberOfPeople : '1' %>"
+                                min="1"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                                required
+                            >
+                        </div>
+
+                        <!-- Special Requests -->
+                        <div class="space-y-2">
+                            <label for="specialRequests" class="block text-xs sm:text-sm font-medium text-white/70">Special Requests (Optional)</label>
+                            <textarea 
+                                id="specialRequests"
+                                name="specialRequests" 
+                                placeholder="Let us know if you have any special requests..."
+                                rows="3"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 resize-none"
+                            > <%= oldInput.specialRequests ? oldInput.specialRequests: '' %></textarea>
+                        </div>
+
+                        <input type="number" name="totalPrice" id="totalPriceInput" hidden>
+
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit"
+                            class="w-full py-3 sm:py-4 px-4 sm:px-6 rounded-lg text-sm sm:text-base text-white font-semibold backdrop-blur-lg bg-emerald-600/80 border border-emerald-500/30 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-emerald-600 mt-6 sm:mt-8 cursor-pointer"
+                        >
+                            Confirm Booking
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div class="text-center mt-8">
-                <a href="/" class="inline-block px-8 py-3 rounded-lg text-white font-medium backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
-                    Explore Properties
-                </a>
+            <!-- Booking Summary (Desktop/Tablet) -->
+            <div class="md:col-span-1">
+                <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl p-4 sm:p-6 sticky top-24">
+                    <h3 class="text-lg sm:text-xl font-bold text-white/90 mb-4 sm:mb-6">Booking Summary</h3>
+
+                    <!-- Property Image -->
+                    <div class="relative aspect-video overflow-hidden rounded-lg mb-4 sm:mb-6 group">
+                        <img 
+                            src="<%=home.photoUrl%>" 
+                            alt="Property"
+                            class="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                        >
+                    </div>
+
+                    <!-- Summary Details -->
+                    <div class="space-y-3 sm:space-y-4 pb-4 sm:pb-6 border-b border-white/10">
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-400">Property Name</p>
+                            <p class="text-sm sm:text-base font-semibold text-white/90"><%= home.houseName %></p>
+                        </div>
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-400">Price per Night</p>
+                            <p class="text-sm sm:text-base font-semibold text-white/90">₹<%= home.price %></p>
+                        </div>
+                    </div>
+
+                    <!-- Calculation -->
+                    <div class="space-y-2 sm:space-y-3 pt-4 sm:pt-6">
+                        <div class="flex justify-between text-xs sm:text-sm">
+                            <span class="text-gray-400">Check-in:</span>
+                            <span id="summaryCheckIn" class="text-white/70 font-medium">-</span>
+                        </div>
+                        <div class="flex justify-between text-xs sm:text-sm">
+                            <span class="text-gray-400">Check-out:</span>
+                            <span id="summaryCheckOut" class="text-white/70 font-medium">-</span>
+                        </div>
+                        <div class="flex justify-between text-xs sm:text-sm">
+                            <span class="text-gray-400">Number of Days:</span>
+                            <span id="numberOfDays" class="text-white/70 font-medium">0</span>
+                        </div>
+                        <div class="flex justify-between text-xs sm:text-sm">
+                            <span class="text-gray-400">Guests:</span>
+                            <span id="totalGuests" class="text-white/70 font-medium">1</span>
+                        </div>
+
+                        <!-- Total Price -->
+                        <div class="flex justify-between text-base sm:text-lg font-bold pt-4 sm:pt-6 border-t border-white/10">
+                            <span class="text-white/90">Total Price:</span>
+                            <span class="text-emerald-400">₹<span id="totalPrice">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Summary (shown only on mobile) -->
+                    <div class="md:hidden mt-4 sm:mt-6 p-3 sm:p-4 rounded-lg backdrop-blur-md bg-emerald-600/20 border border-emerald-500/30">
+                        <p class="text-xs sm:text-sm text-emerald-400 font-semibold">
+                            📋 Review your booking details before confirming
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        // Initialize flatpickr for date range selection
+            const blockedDate = <%- blockedDated %>;
+
+            const fp = flatpickr("#dateRange", {
+                mode: "range",
+                minDate: "today",
+                disable: blockedDate,
+                dateFormat: "Y-m-d",
+                showMonths: 2,
+                onChange: function(selectedDates){
+                    if(selectedDates.length === 2){
+                        const checkIn = selectedDates[0];
+                        const checkOut = selectedDates[1];
+
+                        document.getElementById('checkInDate').value = checkIn.toISOString().split('T')[0];
+                        document.getElementById('checkOut').value = checkOut.toISOString().split('T')[0];
+                        updateSummary();
+                    }
+                }
+            })
+        
+
+
+        const propertyPrice = <%= home.price %>;
+
+        function updateSummary() {
+            const checkIn = document.getElementById('checkInDate').value;
+            const checkOut = document.getElementById('checkOut').value;
+            const numberOfPeople = parseInt(document.getElementById('numberOfPeople').value) || 1;
+
+            // Update dates in summary
+            document.getElementById('summaryCheckIn').textContent = checkIn || '-';
+            document.getElementById('summaryCheckOut').textContent = checkOut || '-';
+
+            // Calculate number of days
+            if (checkIn && checkOut) {
+                const checkInDate = new Date(checkIn);
+                const checkOutDate = new Date(checkOut);
+                const diffTime = checkOutDate - checkInDate;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                document.getElementById('numberOfDays').textContent = diffDays > 0 ? diffDays : 0;
+
+                // Calculate total price
+                const totalPrice = diffDays > 0 ? propertyPrice * diffDays : 0;
+                document.getElementById('totalPrice').textContent = totalPrice;
+                 document.getElementById('totalPriceInput').value = totalPrice;
+            } else {
+                document.getElementById('numberOfDays').textContent = '0';
+                document.getElementById('totalPrice').textContent = '0';
+            }
+
+            // Update guests
+            document.getElementById('totalGuests').textContent = numberOfPeople;
+        }
+
+        // Update summary on changes
+        document.getElementById('checkInDate').addEventListener('change', updateSummary);
+        document.getElementById('checkOut').addEventListener('change', updateSummary);
+        document.getElementById('numberOfPeople').addEventListener('change', updateSummary);
+        document.getElementById('numberOfPeople').addEventListener('input', updateSummary);
+
+        // Initialize summary on page load
+        updateSummary();
+    </script>
 </body>
 </html>

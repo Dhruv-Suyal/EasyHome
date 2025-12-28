@@ -1,3 +1,8 @@
+require('dotenv').config({path: 'contact.env'});
+require('./utils/booking-cron');
+console.log("MAIL_USER:", process.env.MAIL_USER);
+console.log("MAIL_PASS:", process.env.MAIL_PASS ? "Loaded ✅" : "Missing ❌");
+
 const express = require('express');
 const session = require('express-session');
 const mongoDbStore = require('connect-mongodb-session')(session);
@@ -9,6 +14,8 @@ const { errorPage } = require('./controller/store');
 const { default: mongoose } = require('mongoose');
 const authRouter = require('./routes/auth');
 const multer = require('multer');
+const sendMail = require("./utils/sendMail");
+
 
 const mongo_Url = "mongodb+srv://dhruvsuyal:dhruvsuyal@cluster0.lzam4uo.mongodb.net/airbnb?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -23,7 +30,7 @@ const store = new mongoDbStore({
 })
 
 const filefilter = (req, file, cb)=>{
-    if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'){
+    if(file.mimetype.startsWith('image/')){
         cb(null, true);
     }
     else{
@@ -55,6 +62,7 @@ app.use(express.static(path.join(__dirname,'src')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/host/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/homes/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/booking/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(bodyParser.urlencoded());
 app.use(multer({storage: multerStorage, fileFilter: filefilter}).single('photoUrl'));
@@ -71,6 +79,7 @@ app.use((req, res, next)=>{
     next();
 })
 
+
 app.use(authRouter);
 app.use(storeRouter);
 app.use('/host', hostRouter);
@@ -85,3 +94,5 @@ mongoose.connect(mongo_Url).then(()=>{
 }).catch((err)=>{
     console.log("Error while connecting mongoose", err);
 })
+
+
