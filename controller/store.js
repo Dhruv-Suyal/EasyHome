@@ -522,3 +522,19 @@ exports.getSearch = async (req, res, next) => {
     });
     res.render('store/search-result', {homes: homes, favouriteHomes: favouriteHomes, pageTittle:'Search Results', currentPage:'search-results', isLoggedIn:req.isLoggedIn, user: req.session.user, searchQuery: q});
 }
+
+exports.terms = (req, res, next)=>{
+    res.render('store/terms-conditions', {pageTittle:'Terms and Conditions', currentPage:'terms', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.contact = (req, res, next)=>{
+    res.render('store/contact', {pageTittle:'Contact Us', currentPage:'contact', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.privacyPolicy = (req, res, next)=>{
+    res.render('store/privacy-policy', {pageTittle:'Privacy Policy', currentPage:'privacy-policy', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.cookiePolicy = (req, res, next)=>{
+    res.render('store/cookie-policy', {pageTittle:'Cookie Policy', currentPage:'cookie-policy', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
