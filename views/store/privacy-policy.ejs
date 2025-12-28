@@ -1,0 +1,341 @@
+<%- include('../partials/header') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen scroll-smooth">
+   <%- include('../partials/nav.ejs') %>
+    
+    <div class="container mx-auto px-3 sm:px-4 py-6 sm:py-12 pt-28 sm:pt-32">
+        <!-- Header Section -->
+        <div class="text-center space-y-3 sm:space-y-6 mb-8 sm:mb-16 max-w-3xl mx-auto">
+            <div class="inline-block mb-4">
+                <span class="px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-md bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                    Data Protection
+                </span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white/90">
+                Privacy Policy
+            </h1>
+            <p class="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
+                At easyHome, we are committed to protecting your privacy and ensuring transparent communication about how we collect, use, and protect your personal information.
+            </p>
+            <div class="pt-4 text-xs sm:text-sm text-gray-500">
+                Last updated: December 2024
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="max-w-4xl mx-auto">
+            <!-- Privacy Sections -->
+            <div class="space-y-6 sm:space-y-8">
+
+                <!-- 1. Information We Collect -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-blue-500/20 border border-blue-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-blue-400">1</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Information We Collect</h2>
+                            <div class="text-gray-400 text-sm sm:text-base space-y-3 leading-relaxed">
+                                <p><strong class="text-white/80">Account Information:</strong> Name, email address, phone number, address, and date of birth during registration.</p>
+                                <p><strong class="text-white/80">Payment Information:</strong> Credit/debit card details, UPI information, and transaction history (processed securely through Razorpay).</p>
+                                <p><strong class="text-white/80">Booking Information:</strong> Check-in dates, check-out dates, number of guests, and special requests.</p>
+                                <p><strong class="text-white/80">Usage Data:</strong> Browser type, IP address, pages visited, and time spent on the platform.</p>
+                                <p><strong class="text-white/80">Communication:</strong> Emails, messages, and support inquiries you send us.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Payment Security with Razorpay -->
+                <div class="backdrop-blur-md bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-emerald-500/30 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:from-green-500/15 hover:to-emerald-500/15 transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-emerald-500/20 border border-emerald-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-emerald-400">2</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3 flex items-center gap-2">
+                                <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Payment Security (Razorpay)
+                            </h2>
+                            <div class="text-gray-400 text-sm sm:text-base space-y-3 leading-relaxed">
+                                <p>easyHome uses <strong class="text-emerald-400">Razorpay</strong>, India's most trusted payment gateway, to process all transactions securely.</p>
+                                <div class="bg-white/5 border border-emerald-500/20 rounded-lg p-4 space-y-2">
+                                    <p class="flex gap-2"><span class="text-emerald-400">✓</span> <span><strong>SSL Encryption:</strong> All payment data is encrypted with 256-bit SSL</span></p>
+                                    <p class="flex gap-2"><span class="text-emerald-400">✓</span> <span><strong>PCI DSS Compliant:</strong> Razorpay is certified at the highest level</span></p>
+                                    <p class="flex gap-2"><span class="text-emerald-400">✓</span> <span><strong>Tokenization:</strong> Card details are tokenized and never stored on our servers</span></p>
+                                    <p class="flex gap-2"><span class="text-emerald-400">✓</span> <span><strong>3D Secure:</strong> Additional authentication for enhanced security</span></p>
+                                    <p class="flex gap-2"><span class="text-emerald-400">✓</span> <span><strong>Multiple Payment Methods:</strong> Credit cards, debit cards, UPI, net banking, wallets</span></p>
+                                </div>
+                                <p class="mt-3"><strong>Important:</strong> easyHome never stores your complete credit card information. All payment processing is handled securely by Razorpay.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. How We Use Your Information -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-purple-500/20 border border-purple-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-purple-400">3</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">How We Use Your Information</h2>
+                            <ul class="text-gray-400 text-sm sm:text-base space-y-2 leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To process bookings and manage reservations</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To process payments through Razorpay securely</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To send booking confirmations and updates</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To provide customer support and respond to inquiries</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To improve our platform and services</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-purple-400 flex-shrink-0">•</span>
+                                    <span>To comply with legal obligations and fraud prevention</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Data Sharing -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-amber-500/20 border border-amber-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-amber-400">4</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Data Sharing & Third Parties</h2>
+                            <div class="text-gray-400 text-sm sm:text-base space-y-3 leading-relaxed">
+                                <p>Your data may be shared with:</p>
+                                <ul class="space-y-2 ml-4">
+                                    <li class="flex gap-2">
+                                        <span class="text-amber-400">→</span>
+                                        <span><strong>Razorpay:</strong> For secure payment processing only</span>
+                                    </li>
+                                    <li class="flex gap-2">
+                                        <span class="text-amber-400">→</span>
+                                        <span><strong>Property Hosts:</strong> Booking details necessary for check-in</span>
+                                    </li>
+                                    <li class="flex gap-2">
+                                        <span class="text-amber-400">→</span>
+                                        <span><strong>Email Service Providers:</strong> For sending confirmations and updates</span>
+                                    </li>
+                                    <li class="flex gap-2">
+                                        <span class="text-amber-400">→</span>
+                                        <span><strong>Law Enforcement:</strong> When required by law</span>
+                                    </li>
+                                </ul>
+                                <p class="mt-4">We do not sell, rent, or share your personal information with marketing companies or other third parties without your explicit consent.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Data Retention -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-pink-500/20 border border-pink-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-pink-400">5</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Data Retention</h2>
+                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                                We retain your personal data for as long as necessary to provide our services and fulfill the purposes outlined in this policy. Specifically:
+                            </p>
+                            <ul class="text-gray-400 text-sm sm:text-base space-y-2 leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-pink-400 flex-shrink-0">•</span>
+                                    <span>Account information is retained while your account is active</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-pink-400 flex-shrink-0">•</span>
+                                    <span>Transaction records are retained for 7 years for tax/audit purposes</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-pink-400 flex-shrink-0">•</span>
+                                    <span>You can request deletion of your data at any time</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Your Rights & Choices -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-cyan-500/20 border border-cyan-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-cyan-400">6</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Your Rights & Choices</h2>
+                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                                Under data protection laws, you have the right to:
+                            </p>
+                            <ul class="text-gray-400 text-sm sm:text-base space-y-2 leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-cyan-400 flex-shrink-0">✓</span>
+                                    <span><strong>Access:</strong> Request and view your personal data</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-cyan-400 flex-shrink-0">✓</span>
+                                    <span><strong>Correction:</strong> Update or correct inaccurate information</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-cyan-400 flex-shrink-0">✓</span>
+                                    <span><strong>Deletion:</strong> Request deletion of your data</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-cyan-400 flex-shrink-0">✓</span>
+                                    <span><strong>Opt-out:</strong> Unsubscribe from marketing emails anytime</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Security Measures -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-red-500/20 border border-red-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-red-400">7</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Security Measures</h2>
+                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                                We implement multiple security measures to protect your information:
+                            </p>
+                            <ul class="text-gray-400 text-sm sm:text-base space-y-2 leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 flex-shrink-0">🔒</span>
+                                    <span>SSL/TLS encryption for all data transmission</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 flex-shrink-0">🔒</span>
+                                    <span>Secure password hashing and salting</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 flex-shrink-0">🔒</span>
+                                    <span>Regular security audits and updates</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 flex-shrink-0">🔒</span>
+                                    <span>Limited access to sensitive information</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 flex-shrink-0">🔒</span>
+                                    <span>Razorpay's enterprise-level security infrastructure</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Cookies & Tracking -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-indigo-500/20 border border-indigo-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-indigo-400">8</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Cookies & Tracking</h2>
+                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                                easyHome uses cookies and similar technologies to enhance user experience, analyze website usage, and remember preferences. You can control cookie settings through your browser. Disabling cookies may affect functionality.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. Contact & Complaints -->
+                <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-white/[0.08] transition-all duration-300">
+                    <div class="flex gap-4 sm:gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-teal-500/20 border border-teal-500/30">
+                                <span class="text-lg sm:text-xl font-bold text-teal-400">9</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-3">Contact & Data Subject Rights</h2>
+                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-4">
+                                For privacy-related questions, data access requests, or to exercise your rights, please contact us:
+                            </p>
+                            <div class="bg-white/5 border border-white/10 rounded-lg p-4 space-y-2 text-gray-400 text-sm sm:text-base">
+                                <p><strong class="text-white/80">Email:</strong> <a href="mailto:thisiseasyhome@gmail.com" class="text-teal-400 hover:text-teal-300">thisiseasyhome@gmail.com</a></p>
+                                <p><strong class="text-white/80">Response Time:</strong> We'll respond to all privacy requests within 30 days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Razorpay Trust Badge -->
+            <div class="mt-12 sm:mt-16 p-6 sm:p-8 backdrop-blur-md bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/30 rounded-xl sm:rounded-2xl">
+                <div class="flex flex-col sm:flex-row items-center gap-6">
+                    <div class="flex-shrink-0">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-500/20 border border-emerald-500/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 sm:w-12 sm:h-12 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white/90 mb-2">Verified Secure Payments</h3>
+                        <p class="text-gray-400 text-sm sm:text-base">
+                            easyHome uses Razorpay for all payment processing. Razorpay is PCI DSS Level 1 certified, ensuring your payment information is protected with the highest security standards. Learn more about <a href="https://razorpay.com" target="_blank" class="text-emerald-400 hover:text-emerald-300 underline">Razorpay's security</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="mt-12 sm:mt-16 text-center">
+                <p class="text-gray-400 text-sm sm:text-base mb-6">
+                    Have privacy concerns? We're here to help!
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <a href="/contact" class="px-6 py-3 rounded-lg text-white font-medium text-center backdrop-blur-lg bg-purple-600/80 border border-purple-500/30 hover:bg-purple-600/90 transition-all duration-300">
+                        Contact Us
+                    </a>
+                    <a href="/terms-conditions" class="px-6 py-3 rounded-lg text-white font-medium text-center backdrop-blur-lg bg-white/10 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                        View Terms & Conditions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <%- include('../partials/footer') %>
+</body>
+</html>

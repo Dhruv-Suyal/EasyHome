@@ -1,5 +1,5 @@
 const express = require('express');
-const {homeList, getbooking,getIndex,getFavouriteList, homeDetails, postFavouriteList, deleteFavourite, postbooking, getAllBookings, postCancelBooking, getbookinghistory, getAutoComplete, getSearch} = require('../controller/store');
+const {homeList, getbooking,getIndex,getFavouriteList, homeDetails, postFavouriteList, deleteFavourite, postbooking, getAllBookings, postCancelBooking, getbookinghistory, getAutoComplete, getSearch, terms, contact, privacyPolicy, cookiePolicy} = require('../controller/store');
 
 const storeRouter = express.Router();
 
@@ -16,6 +16,9 @@ storeRouter.post("/store/favourites/:homeId", deleteFavourite);
 storeRouter.get("/bookinghistory", getbookinghistory);
 storeRouter.get("/autoComplete", getAutoComplete);
 storeRouter.get("/search", getSearch);
-
+storeRouter.get("/terms", terms);
+storeRouter.get("/contact", contact);
+storeRouter.get("/privacyPolicy", privacyPolicy);
+storeRouter.get("/cookiePolicy", cookiePolicy);
 
 module.exports = storeRouter;
