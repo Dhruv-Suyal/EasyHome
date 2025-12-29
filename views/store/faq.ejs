@@ -1,0 +1,253 @@
+<%- include('../partials/header') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen scroll-smooth">
+   <%- include('../partials/nav.ejs') %>
+    
+    <div class="container mx-auto px-3 sm:px-4 py-6 sm:py-12 pt-28 sm:pt-32">
+        <!-- Header Section -->
+        <div class="text-center space-y-3 sm:space-y-6 mb-8 sm:mb-16 max-w-3xl mx-auto">
+            <div class="inline-block mb-4">
+                <span class="px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-md bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                    Help & Support
+                </span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white/90">
+                Frequently Asked Questions
+            </h1>
+            <p class="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
+                Find answers to common questions about easyHome and how to use our platform.
+            </p>
+        </div>
+
+        <!-- Content Section -->
+        <div class="max-w-3xl mx-auto">
+            <!-- FAQ Items -->
+            <div class="space-y-4 sm:space-y-6">
+
+                <!-- FAQ 1 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-blue-400">?</span>
+                            How do I create an account on easyHome?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                            Click on the "Sign Up" button in the top right corner. Fill in your email address, create a strong password, and provide your basic information. Verify your email address, and you're all set! You can now browse properties and make bookings.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 2 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-purple-400">?</span>
+                            What payment methods do you accept?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                            We accept multiple payment methods through our secure Razorpay gateway:
+                        </p>
+                        <ul class="text-gray-400 text-sm sm:text-base space-y-2 ml-4">
+                            <li class="flex gap-2"><span class="text-purple-400">•</span> Credit Cards (Visa, Mastercard, American Express)</li>
+                            <li class="flex gap-2"><span class="text-purple-400">•</span> Debit Cards</li>
+                            <li class="flex gap-2"><span class="text-purple-400">•</span> UPI (Google Pay, PhonePe, Paytm)</li>
+                            <li class="flex gap-2"><span class="text-purple-400">•</span> Net Banking</li>
+                            <li class="flex gap-2"><span class="text-purple-400">•</span> Digital Wallets</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ 3 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-cyan-400">?</span>
+                            How do I book a property?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <ol class="text-gray-400 text-sm sm:text-base space-y-2 ml-4 list-decimal">
+                            <li>Browse properties and select one you like</li>
+                            <li>Choose your check-in and check-out dates</li>
+                            <li>Review the pricing and availability</li>
+                            <li>Click "Book Now" and proceed to checkout</li>
+                            <li>Enter your payment details and confirm</li>
+                            <li>You'll receive a confirmation email with booking details</li>
+                        </ol>
+                    </div>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-green-400">?</span>
+                            What is your cancellation policy?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                            Cancellation policies vary by property. Each listing displays its specific cancellation terms:
+                        </p>
+                        <ul class="text-gray-400 text-sm sm:text-base space-y-2 ml-4">
+                            <li class="flex gap-2"><span class="text-green-400">•</span> <strong>Flexible:</strong> Free cancellation up to 24 hours before check-in</li>
+                            <li class="flex gap-2"><span class="text-green-400">•</span> <strong>Moderate:</strong> Free cancellation up to 7 days before check-in</li>
+                            <li class="flex gap-2"><span class="text-green-400">•</span> <strong>Strict:</strong> Limited cancellation options</li>
+                        </ul>
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mt-3">
+                            Check the property's cancellation policy before booking. Refunds are processed within 5-7 business days.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 5 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-pink-400">?</span>
+                            Is my payment information secure?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                            Yes, absolutely! We use Razorpay, India's most trusted payment gateway, which provides:
+                        </p>
+                        <ul class="text-gray-400 text-sm sm:text-base space-y-2 ml-4">
+                            <li class="flex gap-2"><span class="text-pink-400">✓</span> 256-bit SSL encryption for all transactions</li>
+                            <li class="flex gap-2"><span class="text-pink-400">✓</span> PCI DSS Level 1 compliance</li>
+                            <li class="flex gap-2"><span class="text-pink-400">✓</span> 3D Secure authentication</li>
+                            <li class="flex gap-2"><span class="text-pink-400">✓</span> We never store your complete card details</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ 6 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-orange-400">?</span>
+                            Can I modify or cancel my booking?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                            Yes! You can modify or cancel your booking through your account:
+                        </p>
+                        <ul class="text-gray-400 text-sm sm:text-base space-y-2 ml-4">
+                            <li class="flex gap-2"><span class="text-orange-400">1.</span> Go to "My Bookings" in your account</li>
+                            <li class="flex gap-2"><span class="text-orange-400">2.</span> Select the booking you want to modify</li>
+                            <li class="flex gap-2"><span class="text-orange-400">3.</span> Click "Modify" or "Cancel"</li>
+                            <li class="flex gap-2"><span class="text-orange-400">4.</span> Follow the on-screen instructions</li>
+                        </ul>
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mt-3">
+                            <strong>Note:</strong> Modifications and cancellations are subject to the property's cancellation policy and availability.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 7 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-indigo-400">?</span>
+                            How do I contact a property host?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                            You can contact a property host directly through the messaging system on your booking. Once you've booked a property, you'll have access to a chat feature to communicate with the host about check-in details, amenities, and any other questions you may have.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 8 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-teal-400">?</span>
+                            What should I do if I have an issue with my stay?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-3">
+                            If you encounter any issues during your stay:
+                        </p>
+                        <ul class="text-gray-400 text-sm sm:text-base space-y-2 ml-4">
+                            <li class="flex gap-2"><span class="text-teal-400">1.</span> Contact the host immediately using the messaging system</li>
+                            <li class="flex gap-2"><span class="text-teal-400">2.</span> If the issue persists, reach out to our support team</li>
+                            <li class="flex gap-2"><span class="text-teal-400">3.</span> Provide detailed information and photos if possible</li>
+                            <li class="flex gap-2"><span class="text-teal-400">4.</span> Our team will investigate and help resolve the matter</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ 9 -->
+                <details class="group backdrop-blur-md bg-white/5 border border-white/10 rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.08] transition-all duration-300">
+                    <summary class="flex items-center justify-between cursor-pointer p-5 sm:p-6 select-none">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 flex items-center gap-3">
+                            <span class="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-xs sm:text-sm font-bold text-red-400">?</span>
+                            Do you offer group bookings or discounts?
+                        </h3>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </summary>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-white/10 pt-4 sm:pt-6">
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                            Yes! Some properties offer discounts for longer stays or group bookings. Check the property listing for any available discounts. For large group inquiries or special requests, please contact our support team and we'll be happy to help you find the perfect arrangement.
+                        </p>
+                    </div>
+                </details>
+
+            </div>
+
+            <!-- Contact Section -->
+            <div class="mt-12 sm:mt-16">
+                <div class="backdrop-blur-md bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg sm:rounded-xl p-6 sm:p-8">
+                    <h3 class="text-lg sm:text-xl font-bold text-white/90 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Didn't find your answer?
+                    </h3>
+                    <p class="text-gray-400 text-sm sm:text-base mb-6">Our support team is here to help. Reach out with any other questions you may have.</p>
+                    <a href="/contact" class="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-white font-medium backdrop-blur-lg bg-gradient-to-r from-blue-500/30 to-purple-500/30 border border-blue-500/20 shadow-lg transition-all duration-300 hover:from-blue-500/40 hover:to-purple-500/40 hover:scale-105">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
