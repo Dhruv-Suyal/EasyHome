@@ -1,0 +1,95 @@
+<%- include('../partials/header') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen scroll-smooth">
+   <%- include('../partials/nav.ejs') %>
+    
+    <div class="container mx-auto px-3 sm:px-4 py-6 sm:py-12 pt-28 sm:pt-32">
+        <!-- Header Section -->
+        <div class="text-center space-y-3 sm:space-y-6 mb-12 sm:mb-16 max-w-3xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white/90">
+                Help Center
+            </h1>
+            <p class="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
+                Find answers and get support for easyHome
+            </p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="max-w-3xl mx-auto space-y-8">
+
+            <!-- Documentation Section -->
+            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6 sm:p-8 space-y-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-white/90">Documentation</h2>
+                
+                <div class="space-y-4">
+                    <!-- Doc 1 -->
+                    <div class="border-l-4 border-blue-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">Getting Started</h3>
+                        <p class="text-gray-400 text-sm">Create an account, verify your email, and set up your profile to start booking properties on easyHome.</p>
+                    </div>
+
+                    <!-- Doc 2 -->
+                    <div class="border-l-4 border-purple-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">How to Book a Property</h3>
+                        <p class="text-gray-400 text-sm">Browse available properties, select dates, review pricing, and complete the booking process securely through our Razorpay payment gateway.</p>
+                    </div>
+
+                    <!-- Doc 3 -->
+                    <div class="border-l-4 border-green-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">Payment Methods</h3>
+                        <p class="text-gray-400 text-sm">We accept credit cards, debit cards, UPI, net banking, and digital wallets. All payments are secure and encrypted.</p>
+                    </div>
+
+                    <!-- Doc 4 -->
+                    <div class="border-l-4 border-orange-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">Cancellations & Refunds</h3>
+                        <p class="text-gray-400 text-sm">Each property has its own cancellation policy. Refunds are processed within 5-7 business days after cancellation.</p>
+                    </div>
+
+                    <!-- Doc 5 -->
+                    <div class="border-l-4 border-cyan-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">Manage Your Booking</h3>
+                        <p class="text-gray-400 text-sm">View, modify, or cancel bookings from "My Bookings" in your account dashboard anytime.</p>
+                    </div>
+
+                    <!-- Doc 6 -->
+                    <div class="border-l-4 border-pink-500/50 pl-4 py-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-white/90 mb-1">Account Security</h3>
+                        <p class="text-gray-400 text-sm">Keep your password secure, enable two-factor authentication, and never share your login details with anyone.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6 sm:p-8">
+                <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-6">Need More Help?</h2>
+                
+                <div class="space-y-3">
+                    <a href="/faq" class="flex items-center justify-between p-4 rounded-lg bg-white/[0.05] hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all group">
+                        <div>
+                            <h3 class="text-base font-semibold text-white/90">Frequently Asked Questions</h3>
+                            <p class="text-xs sm:text-sm text-gray-400 mt-1">Browse common questions and answers</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-white/90 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+
+                    <a href="/contact" class="flex items-center justify-between p-4 rounded-lg bg-white/[0.05] hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all group">
+                        <div>
+                            <h3 class="text-base font-semibold text-white/90">Contact Support</h3>
+                            <p class="text-xs sm:text-sm text-gray-400 mt-1">Get in touch with our support team</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-white/90 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

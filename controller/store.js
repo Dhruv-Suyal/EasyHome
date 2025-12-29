@@ -539,3 +539,19 @@ exports.privacyPolicy = (req, res, next)=>{
 exports.cookiePolicy = (req, res, next)=>{
     res.render('store/cookie-policy', {pageTittle:'Cookie Policy', currentPage:'cookie-policy', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }
+
+exports.desclaimer = (req, res, next)=>{
+    res.render('store/desclaimer', {pageTittle:'Desclaimer', currentPage:'desclaimer', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.faq = (req, res, next)=>{
+    res.render('store/faq', {pageTittle:'FAQ', currentPage:'faq', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.helpCenter = (req, res, next)=>{
+    res.render('store/helpCenter', {pageTittle:'Help Center', currentPage:'help-center', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
+
+exports.safetyTips = (req, res, next)=>{
+    res.render('store/safetyTips', {pageTittle:'Safety Tips', currentPage:'safety-tips', isLoggedIn:req.isLoggedIn, user: req.session.user});
+}
