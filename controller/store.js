@@ -524,6 +524,7 @@ exports.getSearch = async (req, res, next) => {
 }
 
 exports.terms = (req, res, next)=>{
+    console.log("DEPLOY TEST 1");
     res.render('store/terms-conditions', {pageTittle:'Terms and Conditions', currentPage:'terms', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }
 
