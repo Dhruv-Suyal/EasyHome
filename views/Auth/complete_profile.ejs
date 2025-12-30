@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile</title>
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen flex items-center justify-center">
+   <div class="max-w-md w-full px-4">
+        <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-xl p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-bold text-white/90">Complete Your Profile</h1>
+                <p class="text-gray-400 text-sm">Just a few more steps to get started</p>
+            </div>
+
+            <!-- User Info Display -->
+            <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-lg p-4 space-y-3">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Full Name</p>
+                    <p class="text-white/90 font-medium"><%= user.username %></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Email</p>
+                    <p class="text-white/90 font-medium"><%= user.email %></p>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <%- include('../partials/errors') %>
+            </div>
+
+            <form action="/profile" method="POST" class="space-y-4">
+                <!-- Password Field -->
+                 <% if(!user.password){ %>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-white/70">Password</label>
+                    <div class="relative">
+                        <input 
+                            class="w-full px-4 py-3 rounded-lg backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" 
+                            type="password" 
+                            id="password"
+                            name="password" 
+                            placeholder="Create a strong password" 
+                            minlength="8"
+                            required>
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" onclick="togglePasswordVisibility('password')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400">At least 8 characters, mix of uppercase, lowercase, and numbers</p>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-white/70">Confirm Password</label>
+                    <div class="relative">
+                        <input 
+                            class="w-full px-4 py-3 rounded-lg backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" 
+                            type="password" 
+                            id="confirmPassword"
+                            name="confirmPassword" 
+                            placeholder="Re-enter your password" 
+                            minlength="8"
+                            required>
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" onclick="togglePasswordVisibility('confirmPassword')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <% } %>
+                <!-- User Type Selection -->
+                 <% if(!user.isProfileCompleted){ %>
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-white/70">What are you?</label>
+                    <div class="space-y-3">
+                        <!-- Guest Option -->
+                        <label class="flex items-start gap-3 p-4 rounded-lg border-2 border-white/20 cursor-pointer hover:border-blue-500/50 hover:bg-white/[0.08] transition-all duration-300" onclick="selectUserType('guest')">
+                            <input 
+                                type="radio" 
+                                name="userType" 
+                                value="guest" 
+                                class="mt-1 w-4 h-4 accent-blue-500"
+                                required>
+                            <div>
+                                <p class="font-medium text-white/90">Guest</p>
+                                <p class="text-xs text-gray-400">Browse and book properties</p>
+                            </div>
+                        </label>
+
+                        <!-- Host Option -->
+                        <label class="flex items-start gap-3 p-4 rounded-lg border-2 border-white/20 cursor-pointer hover:border-green-500/50 hover:bg-white/[0.08] transition-all duration-300" onclick="selectUserType('host')">
+                            <input 
+                                type="radio" 
+                                name="userType" 
+                                value="host" 
+                                class="mt-1 w-4 h-4 accent-green-500"
+                                required>
+                            <div>
+                                <p class="font-medium text-white/90">Host</p>
+                                <p class="text-xs text-gray-400">List and manage your properties</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <% } %>
+                <button 
+                    class="w-full mt-6 px-6 py-3 rounded-lg text-white font-medium backdrop-blur-lg bg-blue-600/80 border border-blue-500/30 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    type="submit">
+                    Complete Profile
+                </button>
+            </form>
+
+            <div class="text-center pt-4 border-t border-white/10">
+                <p class="text-sm text-gray-400">
+                    By continuing, you agree to our 
+                    <a href="/terms" class="text-blue-400 hover:underline">Terms</a> and 
+                    <a href="/privacyPolicy" class="text-blue-400 hover:underline">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+   </div>
+
+   <script>
+       function togglePasswordVisibility(fieldId) {
+           const field = document.getElementById(fieldId);
+           if (field.type === 'password') {
+               field.type = 'text';
+           } else {
+               field.type = 'password';
+           }
+       }
+
+       function selectUserType(type) {
+           const guestLabel = document.querySelector('label:has(input[value="guest"])');
+           const hostLabel = document.querySelector('label:has(input[value="host"])');
+           
+           if (type === 'guest') {
+               guestLabel.classList.add('border-blue-500/50', 'bg-blue-500/10');
+               guestLabel.classList.remove('border-white/20');
+               hostLabel.classList.remove('border-blue-500/50', 'bg-blue-500/10');
+               hostLabel.classList.add('border-white/20');
+           } else {
+               hostLabel.classList.add('border-green-500/50', 'bg-green-500/10');
+               hostLabel.classList.remove('border-white/20');
+               guestLabel.classList.remove('border-green-500/50', 'bg-green-500/10');
+               guestLabel.classList.add('border-white/20');
+           }
+       }
+
+       // Form validation
+       
+   </script>
+</body>
+</html>

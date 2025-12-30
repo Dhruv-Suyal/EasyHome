@@ -4,6 +4,7 @@ console.log("MAIL_USER:", process.env.MAIL_USER);
 console.log("MAIL_PASS:", process.env.MAIL_PASS ? "Loaded ✅" : "Missing ❌");
 
 const express = require('express');
+const passport = require('./utils/goggle-auth');
 const session = require('express-session');
 const mongoDbStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser');
@@ -16,16 +17,12 @@ const authRouter = require('./routes/auth');
 const multer = require('multer');
 const sendMail = require("./utils/sendMail");
 
-
-const mongo_Url = "mongodb+srv://dhruvsuyal:dhruvsuyal@cluster0.lzam4uo.mongodb.net/airbnb?retryWrites=true&w=majority&appName=Cluster0";
-
-
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const store = new mongoDbStore({
-    uri: mongo_Url,
+    uri:  process.env.MONGO_URL,
     collection: 'sessions'
 })
 
@@ -74,6 +71,9 @@ app.use(session({
     store: store,
 }))
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next)=>{
     req.isLoggedIn = req.session.isLoggedIn;
     next();
@@ -87,7 +87,7 @@ app.use('/', errorPage);
 
 const port = process.env.PORT || 3000;
 
-mongoose.connect(mongo_Url).then(()=>{
+mongoose.connect(process.env.MONGO_URL).then(()=>{
     console.log("Mongoose Connected");
     app.listen(port, ()=>{
     console.log(`Server is Successfully Created at http://localhost:${port}`);})
