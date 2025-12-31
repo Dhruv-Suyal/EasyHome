@@ -119,7 +119,7 @@ exports.postProfile = [
     check('password')
             .isLength({min: 8})
             .withMessage('Password must be at least 8 characters Long')
-            .bail
+            .bail()
             .matches(/[a-z]/)
             .withMessage('Password must contain at least one lowercase letter')
             .matches(/[A-Z]/)
@@ -166,7 +166,7 @@ exports.postProfile = [
     if(userType){
         req.session.user.userType = userType;
         req.session.user.isProfileCompleted = true;
-        await User.findByIdAndUpdate(user._id, {userType});
+        await User.findByIdAndUpdate(user._id, {userType, isProfileCompleted: true});
     }
     console.log("Profile completed successfully, redirecting to home");
     return res.redirect('/');
