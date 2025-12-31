@@ -119,6 +119,7 @@ exports.postProfile = [
     check('password')
             .isLength({min: 8})
             .withMessage('Password must be at least 8 characters Long')
+            .bail
             .matches(/[a-z]/)
             .withMessage('Password must contain at least one lowercase letter')
             .matches(/[A-Z]/)
@@ -146,13 +147,15 @@ exports.postProfile = [
     const {userType, password} = req.body;
     const user = req.session.user;
     if(!user){
+        console.log("No user in session, redirecting to login");
         return res.redirect('/login');
     }
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
+        console.log("Validation errors in profile completion:", errors.array());
         return res.status(422).render('Auth/complete_profile',
-            {error: errors.array().map(err => err.msg)}
+            {error: errors.array().map(err => err.msg), user: user }
         )
     }
 
@@ -165,6 +168,7 @@ exports.postProfile = [
         req.session.user.isProfileCompleted = true;
         await User.findByIdAndUpdate(user._id, {userType});
     }
-    res.redirect('/');
+    console.log("Profile completed successfully, redirecting to home");
+    return res.redirect('/');
 }
 ];

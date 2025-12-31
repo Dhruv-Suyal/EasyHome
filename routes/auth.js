@@ -10,11 +10,13 @@ authRouter.get('/auth/google', passport.authenticate("google", {scope: ['profile
 authRouter.get('/auth/google/callback', passport.authenticate("google", {failureRedirect: '/login'}),   async (req, res)=>{
     req.session.isLoggedIn = true;
     req.session.user = req.user;
-
+    console.log(req.user.isProfileCompleted, req.user.password);
     if(!req.user.isProfileCompleted || !req.user.password){
+        console.log("Redirecting to profile");
         return res.redirect('/profile');
     }
     else{
+        console.log("Redirecting to home");
         return res.redirect('/');
     }
 });
@@ -22,12 +24,17 @@ authRouter.get('/auth/google/callback', passport.authenticate("google", {failure
 authRouter.get('/profile', (req, res)=>{
     const user = req.session.user;
     if(!user){
+        console.log("No user in session, redirecting to login");
         return res.redirect('/login');
     }
     if(!user.isProfileCompleted || !user.password){   
-        res.render('Auth/complete_profile', {user: req.user, error:[]});
+        console.log("Rendering complete profile page");
+        return res.render('Auth/complete_profile', {user: req.user, error:[]});
     }
+    else{
+        console.log("Profile already completed, redirecting to home");
     return res.redirect('/');
+    }
 });
 
 authRouter.post('/profile', postProfile);
