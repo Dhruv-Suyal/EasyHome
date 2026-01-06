@@ -189,10 +189,13 @@ exports.getMyBookings = async (req, res, next)=>{
         return res.redirect('/login');
     }
     const userId = req.session.user._id;
+    const hostMsg =req.session.hostMsg|| null;
+    req.session.hostMsg = null;
     const homes = await Home.find({host: userId}).sort({createdAt: -1});
         if (homes.length === 0) {
             return res.render('host/host-bookings', {
                 bookings: [],
+                hostMsg: hostMsg,
                 pageTittle: 'Home Bookings',
                 currentPage: 'mybooking',
                 isLoggedIn: req.isLoggedIn,
@@ -211,8 +214,6 @@ exports.getMyBookings = async (req, res, next)=>{
             return obj;
         })
         console.log(bookings.checkInDate, now);
-        const hostMsg =req.session.hostMsg|| null;
-        req.session.hostMsg = null;
         console.log("HostMsg:",hostMsg);
         return res.render('host/host-bookings', {bookings: bookings, hostMsg: hostMsg, pageTittle:'Home Bookings', currentPage:'mybooking', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }

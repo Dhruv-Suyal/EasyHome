@@ -341,7 +341,7 @@ exports.bookingDetail = async (req, res, next)=>{
     }
     const refundMsg = req.session.refundMsg || null;
     req.session.refundMsg = null;
-    res.render('store/booking-detail', {pageTittle:'Booking Details',booking: booking, refundable:refundable, cancellable:cancellable, refundMsg:refundMsg, currentPage:'booking-detail', isLoggedIn:req.isLoggedIn, user: req.session.user});
+    res.render('store/Booking-detail', {pageTittle:'Booking Details',booking: booking, refundable:refundable, cancellable:cancellable, refundMsg:refundMsg, currentPage:'booking-detail', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }
 
 exports.getFavouriteList = async (req, res, next)=>{
@@ -639,7 +639,7 @@ exports.getSearch = async (req, res, next) => {
     if(!q){
         return res.redirect(req.url);
     }
-    const favouriteHomes = [];
+    let favouriteHomes = [];
     if(req.isLoggedIn){
     const userId = req.session.user._id;
      favouriteHomes = await user.findById(userId).populate("favourite").select('favourite');

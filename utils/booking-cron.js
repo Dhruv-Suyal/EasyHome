@@ -17,26 +17,26 @@ const sameDay = (date1, date2)=>{
 corn.schedule('0 * * * *', async ()=>{
     const now = new Date();
     const sixHoursFromNow = new Date(now.getTime() + 6 * 60 * 60 * 1000);
-    const bookings = booking.find({
+    const bookings = await booking.find({
         status: 'Pending',
-        checkInDate: {$lte: sixHoursFromNow}
+        checkInDate: {$gt: now, $lte: sixHoursFromNow}
     });
-    bookings.forEach(async b =>{
+    for(const b of bookings){
         b.status = 'Cancelled';
-        if(b.paymentStatus = 'Paid'){
+        if(b.paymentStatus === 'Paid'){
             // Process refund via Razorpay
-                    const refund = await instance.payments.refund(booking.paymentId, {
-                        amount: booking.totalPrice * 100,
+                    const refund = await instance.payments.refund(b.paymentId, {
+                        amount: b.totalPrice * 100,
                         speed: 'normal',
                     });
-                    booking.refundId = refund.id;
-                    booking.paymentStatus = 'Refunded';
+                    b.refundId = refund.id;
+                    b.paymentStatus = 'Refunded';
         }
         await b.save();
-    })
+    }
 })
 
-corn.schedule('0 9 * * * *', async ()=>{
+corn.schedule('0 0 9 * * *', async ()=>{
     console.log('Running booking reminder cron job');
     const today = new Date();
 
@@ -48,7 +48,7 @@ corn.schedule('0 9 * * * *', async ()=>{
 
     const bookings = await booking.find({status: 'Confirmed'}).populate('home').populate('user');
 
-    bookings.forEach( async b=>{
+    for( const b of bookings){
         const checkIn = new Date(b.checkInDate);
         const checkOut = new Date(b.checkOutDate);
         const home = await Home.findById(b.home._id).populate('host');
@@ -246,6 +246,6 @@ corn.schedule('0 9 * * * *', async ()=>{
         await b.save();
     }
 
-    })
+    }
 
 })
