@@ -83,10 +83,20 @@
                                         </div>
 
                                         <div class="flex items-center justify-between pt-1 sm:pt-1.5 lg:pt-2 gap-1 sm:gap-2 lg:gap-0">
+                                            <div>
                                             <span class="flex items-center text-yellow-400 text-xs sm:text-sm lg:text-sm">
-                                                ★★★★★
-                                                <span class="ml-1 text-white/70">5.0</span>
+                                               <% const fullStar = Math.floor(Home.ratings);
+                                               const emptyStar = 5 - fullStar; %>
+                                               <% for(let i=0; i<fullStar; i++) { %>
+                                                   ★
+                                                  <% } %>
+                                                  <span class="text-gray-500">
+                                                  <% for(let i=0; i<emptyStar; i++) { %>
+                                                      ☆
+                                                    <% } %>
+                                                <span class="ml-1 text-white/70"><%= (Home.ratings || 5).toFixed(1) %></span>
                                             </span>
+                                            </div>
                                             <a href="/booking/<%= Home._id %>" class="px-2 py-1 sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 rounded text-white font-medium text-xs sm:text-sm lg:text-sm backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
                                                 Book
                                             </a>
@@ -156,10 +166,20 @@
                                         </div>
 
                                         <div class="flex items-center justify-between pt-1 sm:pt-1.5 lg:pt-2 gap-1 sm:gap-2 lg:gap-0">
+                                            <div>
                                             <span class="flex items-center text-yellow-400 text-xs sm:text-sm lg:text-sm">
-                                                ★★★★☆
-                                                <span class="ml-1 text-white/70">4.2</span>
+                                               <% const fullStar = Math.floor(Home.ratings);
+                                               const emptyStar = 5 - fullStar; %>
+                                               <% for(let i=0; i<fullStar; i++) { %>
+                                                   ★
+                                                  <% } %>
+                                                  <span class="text-gray-500">
+                                                  <% for(let i=0; i<emptyStar; i++) { %>
+                                                      ☆
+                                                    <% } %>
+                                                <span class="ml-1 text-white/70"><%= (Home.ratings || 5).toFixed(1) %></span>
                                             </span>
+                                            </div>
                                             <a href="/booking/<%= Home._id %>" class="px-2 py-1 sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 rounded text-white font-medium text-xs sm:text-sm lg:text-sm backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
                                                 Book
                                             </a>
@@ -229,10 +249,20 @@
                                         </div>
 
                                         <div class="flex items-center justify-between pt-1 sm:pt-1.5 lg:pt-2 gap-1 sm:gap-2 lg:gap-0">
+                                            <div>
                                             <span class="flex items-center text-yellow-400 text-xs sm:text-sm lg:text-sm">
-                                                ★★★★★
-                                                <span class="ml-1 text-white/70">4.8</span>
+                                               <% const fullStar = Math.floor(Home.ratings);
+                                               const emptyStar = 5 - fullStar; %>
+                                               <% for(let i=0; i<fullStar; i++) { %>
+                                                   ★
+                                                  <% } %>
+                                                  <span class="text-gray-500">
+                                                  <% for(let i=0; i<emptyStar; i++) { %>
+                                                      ☆
+                                                    <% } %>
+                                                <span class="ml-1 text-white/70"><%= (Home.ratings || 5).toFixed(1) %></span>
                                             </span>
+                                            </div>
                                             <a href="/booking/<%= Home._id %>" class="px-2 py-1 sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 rounded text-white font-medium text-xs sm:text-sm lg:text-sm backdrop-blur-lg bg-white/20 border border-white/10 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/30">
                                                 Book
                                             </a>

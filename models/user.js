@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     googleId: {type: String},
     isProfileCompleted: {type: Boolean, default: false},
     userType: {type: String, enum: ['host', 'guest'], required: true, default: 'guest'},
-    favourite: [{type: mongoose.Schema.Types.ObjectId, ref: 'Home'}]
+    favourite: [{type: mongoose.Schema.Types.ObjectId, ref: 'Home'}],
+    isSuspended: {type: Boolean, default: false},
 })
 
 module.exports = mongoose.model('User', userSchema);

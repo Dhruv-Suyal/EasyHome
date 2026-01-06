@@ -19,12 +19,14 @@ const bookingSchema = new mongoose.Schema({
     checkOutMailSent: {type: Boolean, default: false},
 
     checkInOtp: {type: String},
+    qrcode: {type: String},
     checkInAt: {type: Date},
     checkOutAt: {type: Date},
 
     paymentStatus: {type: String, enum: ['Pending', 'Paid', 'Failed', 'Refunded'], default: 'Pending'},
     paymentId: {type: String},
     orderId: {type: String},
+    refundId: {type: String},
     
 }, {timestamps: true});         
 

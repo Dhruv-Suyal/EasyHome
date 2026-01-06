@@ -241,7 +241,7 @@ span.flatpickr-weekday {
 
             const fp = flatpickr("#dateRange", {
                 mode: "range",
-                minDate: "today",
+                minDate: new Date().fp_incr(1),
                 disable: blockedDate,
                 dateFormat: "Y-m-d",
                 showMonths: 2,
@@ -250,8 +250,16 @@ span.flatpickr-weekday {
                         const checkIn = selectedDates[0];
                         const checkOut = selectedDates[1];
 
-                        document.getElementById('checkInDate').value = checkIn.toISOString().split('T')[0];
-                        document.getElementById('checkOut').value = checkOut.toISOString().split('T')[0];
+                        const formatDate = (d) => {
+                        const year = d.getFullYear();
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const day = String(d.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                        };
+
+                        document.getElementById('checkInDate').value = formatDate(checkIn);
+                        document.getElementById('checkOut').value = formatDate(checkOut);
+
                         updateSummary();
                     }
                 }
@@ -272,8 +280,8 @@ span.flatpickr-weekday {
 
             // Calculate number of days
             if (checkIn && checkOut) {
-                const checkInDate = new Date(checkIn);
-                const checkOutDate = new Date(checkOut);
+                const checkInDate = new Date(checkIn + "T12:00:00");
+                const checkOutDate = new Date(checkOut + "T12:00:00");
                 const diffTime = checkOutDate - checkInDate;
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 document.getElementById('numberOfDays').textContent = diffDays > 0 ? diffDays : 0;

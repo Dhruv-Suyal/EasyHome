@@ -10,6 +10,8 @@ const homeSchema = new mongoose.Schema({
     squareFt: {type: Number},
     photoUrl: String,
     host: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    ratings: {type: Number, default: 5, min: 1, max: 5},
+    cancellationCount: {type: Number, default: 0},
 })
 
 module.exports = mongoose.model('Home', homeSchema);

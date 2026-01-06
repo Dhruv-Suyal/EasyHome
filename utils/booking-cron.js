@@ -2,6 +2,7 @@ const corn = require('node-cron');
 const booking = require('../models/booking');
 const sendMail = require('./sendMail');
 const Home = require('../models/data');
+const instance = require('./razorpay');
 
 console.log('Booking cron job initialized');
 
@@ -12,6 +13,28 @@ const sameDay = (date1, date2)=>{
         date1.getDate() === date2.getDate()
     );
 }
+
+corn.schedule('0 * * * *', async ()=>{
+    const now = new Date();
+    const sixHoursFromNow = new Date(now.getTime() + 6 * 60 * 60 * 1000);
+    const bookings = booking.find({
+        status: 'Pending',
+        checkInDate: {$lte: sixHoursFromNow}
+    });
+    bookings.forEach(async b =>{
+        b.status = 'Cancelled';
+        if(b.paymentStatus = 'Paid'){
+            // Process refund via Razorpay
+                    const refund = await instance.payments.refund(booking.paymentId, {
+                        amount: booking.totalPrice * 100,
+                        speed: 'normal',
+                    });
+                    booking.refundId = refund.id;
+                    booking.paymentStatus = 'Refunded';
+        }
+        await b.save();
+    })
+})
 
 corn.schedule('0 9 * * * *', async ()=>{
     console.log('Running booking reminder cron job');

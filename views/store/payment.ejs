@@ -1,0 +1,188 @@
+<%- include('../partials/header') %>
+</head>
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Secure Payment</h1>
+            <p class="text-gray-400 text-lg">Complete your booking with confidence</p>
+        </div>
+
+        <!-- Main Payment Card -->
+        <div class="bg-black/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden mb-8">
+            <!-- Booking Summary Section -->
+            <div class="p-8 border-b border-white/10 bg-gradient-to-r from-emerald-500/10 to-transparent">
+                <h2 class="text-2xl font-bold text-white mb-6">Booking Summary</h2>
+                
+                <!-- Property Details -->
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v7a1 1 0 001 1h12a1 1 0 001-1V9m0 0l2-3m-2 3v7a1 1 0 01-1 1H6a1 1 0 01-1-1V9"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Property Name</p>
+                                <p class="text-white font-semibold text-lg"><%= booking.home.houseName %></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                        <div class="p-4 bg-white/5 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">Check-in</p>
+                            <p class="text-white font-semibold"><%= new Date(booking.checkInDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">Check-out</p>
+                            <p class="text-white font-semibold"><%= new Date(booking.checkOutDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">Guests</p>
+                            <p class="text-white font-semibold"><%= booking.numberOfPeople %></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="space-y-3 bg-black/50 rounded-lg p-4 mb-6">
+                    <div class="flex justify-between text-gray-300">
+                        <span>Base Price</span>
+                        <span>₹<%= (booking.totalPrice * 0.85).toFixed(2) %></span>
+                    </div>
+                    <div class="flex justify-between text-gray-300">
+                        <span>Service Fee</span>
+                        <span>₹<%= (booking.totalPrice * 0.15).toFixed(2) %></span>
+                    </div>
+                    <div class="border-t border-white/10 pt-3 flex justify-between items-center">
+                        <span class="text-white font-semibold">Total Amount</span>
+                        <span class="text-3xl font-bold text-emerald-400">₹<%= booking.totalPrice %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method Section -->
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-white mb-6">Payment Method</h2>
+                
+                <div class="space-y-4 mb-8">
+                    <!-- Razorpay Badge -->
+                    <div class="p-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-lg flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white">
+                                RZ
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Razorpay</p>
+                                <p class="text-gray-400 text-sm">Secure online payment</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Security Features -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="flex items-center space-x-2 text-gray-300">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 5.414l-3.293 3.293a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-sm">256-bit Encrypted</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-300">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 5.414l-3.293 3.293a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-sm">Verified Gateway</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-300">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 5.414l-3.293 3.293a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-sm">PCI Compliant</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Button -->
+                <button id="payBtn" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 shadow-lg text-lg">
+                    <span class="flex items-center justify-center space-x-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 1112 2.944a11.954 11.954 0 018.618 3.04A12.02 12.02 0 0121 12"></path>
+                        </svg>
+                        <span>Complete Payment - ₹<%= booking.totalPrice %></span>
+                    </span>
+                </button>
+
+                <!-- Terms -->
+                <p class="text-center text-gray-400 text-sm mt-6">
+                    By clicking "Complete Payment", you agree to our
+                    <a href="#" class="text-emerald-400 hover:text-emerald-300 transition-colors">Terms & Conditions</a>
+                    and
+                    <a href="#" class="text-emerald-400 hover:text-emerald-300 transition-colors">Cancellation Policy</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Support Section -->
+        <div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+            <p class="text-gray-300 mb-2">Questions about your booking?</p>
+            <p class="text-gray-400 text-sm">Contact our support team at <a href="mailto:support@easyhome.com" class="text-emerald-400 hover:text-emerald-300 transition-colors">support@easyhome.com</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('payBtn').addEventListener('click', async ()=>{
+        const bookingId = "<%= booking._id %>";
+        const res = await fetch(`/payment/${bookingId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+        console.log(data.success);
+        if(!data.success){
+            alert('Error creating order. Please try again.');
+            return;
+        }
+        console.log(data)
+        console.log(data.order)
+        var option ={
+            key: data.key,
+            amount: data.order.amount,
+            currency: "INR",
+            name: "EasyHome",
+            description: "Booking Payment",
+            order_id: data.order.id,
+            handler: async function(response){
+                console.log("HANDLER FIRED");
+                await fetch("/payment-verify", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bookingId: bookingId,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                });
+            window.location.href = '/Allbookings';
+            },
+        }
+        
+        console.log(option)
+        const rzp1 = new Razorpay(option);
+        rzp1.open();
+    })
+</script>
+
+

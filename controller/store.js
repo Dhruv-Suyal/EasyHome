@@ -3,6 +3,8 @@ const Home = require("../models/data");
 const user = require("../models/user");
 const Booking = require("../models/booking");
 const sendMail = require("../utils/sendMail");
+const instance = require("../utils/razorpay");
+const crypto = require("crypto");
 
 
 exports.homeList =async (req, res, next)=>{
@@ -141,6 +143,7 @@ exports.postbooking = [
     const duplicateBooking = await Booking.findOne({
         home: homeId,
         user: user,
+        status: {$in: ["Pending", "Confirmed", "checkedIn"]},
         checkInDate: {$lt: checkOut},
         checkOutDate: {$gt: checkIn}
     });
@@ -248,9 +251,66 @@ exports.postbooking = [
       console.warn("⚠️ User email not found in form or session.");
     }
     
-    res.redirect('/Allbookings');
+    res.redirect(`/payment/${booking._id}`);
     }
 ]
+
+exports.getPaymentPage = async (req, res, next)=>{
+    const user = req.session.user;
+    console.log(user);
+    if(!user){
+        return res.redirect('/');
+    }
+
+    const bookingId = req.params.bookingId;
+    console.log(bookingId);
+    const booking = await Booking.findById(bookingId).populate('home');
+    if(!booking){
+        return res.redirect('/');
+    }
+     console.log(booking);
+    res.render('store/payment', {booking: booking, keyId:process.env.RAZORPAY_KEY_ID, pageTittle:'Payment', currentPage:'payment', isLoggedIn:req.isLoggedIn, user: user});
+}
+
+exports.postPaymentPage = async (req, res, next)=>{
+    const bookingId = req.params.bookingId;
+    const booking = await Booking.findById(bookingId).populate('home');
+    console.log("At post payment page");
+    const options = {
+        amount: booking.totalPrice * 100,
+        currency: "INR",
+        receipt: `receipt_order_${bookingId}`,
+    }
+
+    const order = await instance.orders.create(options);
+    booking.orderId = order.id;
+    await booking.save();
+    res.json({
+        success: true,
+        key: process.env.RAZORPAY_KEY_ID,
+        order: order
+    })
+}
+
+exports.postPaymentVerify = async (req, res, next)=>{
+    console.log(req.headers);
+    console.log(req.body);
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId } = req.body;
+    const booking = await Booking.findById(bookingId);
+
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSign = crypto
+                        .createHmac('sha256', process.env.RazorPay_Secret_Key)
+                        .update(sign.toString())
+                        .digest("hex");
+    
+    if(expectedSign === razorpay_signature){
+        await Booking.findByIdAndUpdate(bookingId, {paymentStatus: 'Paid', paymentId: razorpay_payment_id});
+        return res.json({status: true});
+    }
+     return res.status(400).json({status: false});
+}
 
 exports.getAllBookings = (req, res, next)=>{
     if(!req.isLoggedIn) {  
@@ -258,11 +318,30 @@ exports.getAllBookings = (req, res, next)=>{
     }
     const userId = req.session.user._id;
     Booking.find({user: userId , status: { $in: ["Pending", "Confirmed"] } }).populate('home').sort({createdAt: -1}).then((bookings)=>{
-        
         res.render('store/All-booking', {bookings: bookings, pageTittle:'All Bookings', currentPage:'booking', isLoggedIn:req.isLoggedIn, user: req.session.user});
     }).catch(err=>{
         console.log(err);
     });
+}
+
+exports.bookingDetail = async (req, res, next)=>{
+    const bookingId = req.params.bookingId;
+    const booking = await Booking.findOne({_id: bookingId}).populate('home').populate('user');
+
+    const now = new Date();
+    const diffMs = booking.checkInDate - now;
+    const diffHours = diffMs / (1000 * 60 * 60);
+    let refundable = false;
+    let cancellable = false;
+    if(diffHours>=48){
+        refundable = true;
+    }
+    if(booking.checkInDate>=now){
+        cancellable = true;
+    }
+    const refundMsg = req.session.refundMsg || null;
+    req.session.refundMsg = null;
+    res.render('store/booking-detail', {pageTittle:'Booking Details',booking: booking, refundable:refundable, cancellable:cancellable, refundMsg:refundMsg, currentPage:'booking-detail', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }
 
 exports.getFavouriteList = async (req, res, next)=>{
@@ -290,7 +369,6 @@ exports.postFavouriteList = async (req, res, next)=>{
 }
 
 exports.getIndex = async (req, res, next)=>{
-    const registeredHome = await Home.find();
 
     const NewlyAddedHomes = await Home.find().sort({createdAt: -1}).limit(5);
 
@@ -300,7 +378,7 @@ exports.getIndex = async (req, res, next)=>{
         {$limit: 5}
     ]);
 
-    const MostBookedHome = await Home.populate(data, {path: '_id', select: 'houseName location description price photoUrl'});
+    const MostBookedHome = await Home.populate(data, {path: '_id'});
     const map = new Map();
 
     MostBookedHome.forEach(item =>{
@@ -374,15 +452,57 @@ exports.postCancelBooking = async (req, res, next)=>{
     } 
     const bookingId = req.params.bookingId;
     const reasonForCancellation = req.body.reasonForCancellation;
-    const booking = await Booking.findById(bookingId).populate('home');
+    const booking = await Booking.findOne({_id: bookingId}).populate('home');
     const home = await Home.findById(booking.home._id).populate('host');
+    const userId = req.session.user._id;
+
         if(!booking){
             console.log("Booking not found");
-            return res.redirect('/Allbookings');
+            return res.redirect(`/bookingDetails/${bookingId}`);
         }   
         else{
-            booking.status = 'Cancelled';
-            await booking.save();
+            if (booking.bookingStatus === "Cancelled") {
+            return res.redirect(`/bookingDetails/${bookingId}`);
+            }
+            const now = new Date();
+            const diffMs = booking.checkInDate - now;
+            const diffHours = diffMs / (1000 * 60 * 60);
+
+            let refundable = false;
+            let cancellable = false;
+
+            if(diffHours>=48 && (booking.paymentStatus == 'Paid' || booking.paymentId)){
+                refundable = true;
+            }
+            if(now < booking.checkInDate){
+                cancellable = true;
+            }
+            if(!cancellable){
+                return res.redirect(`/bookingDetails/${bookingId}`);
+            }
+            let refundMsg = '';
+            if(refundable){
+                // Process refund via Razorpay
+                    const refund = await instance.payments.refund(booking.paymentId, {
+                        amount: booking.totalPrice * 100,
+                        speed: 'normal',
+                    });
+                    booking.refundId = refund.id;
+                    booking.paymentStatus = 'Refunded';
+                req.session.refundMsg = 'A full refund has been initiated and will be processed to your original payment method within 5-7 business days.';
+                booking.status = 'Cancelled';
+                await booking.save();
+            }
+            else{
+                if(booking.paymentStatus !== 'Paid' || !booking.paymentId){
+                     req.session.refundMsg = 'Successfully Cancelled the booking';
+                }
+                else{
+                    req.session.refundMsg = 'This booking is non-refundable as per our cancellation policy. Refund only applies for cancellations made at least 48 hours before check-in.';
+                }
+                booking.status = 'Cancelled';
+                await booking.save();
+            }
 
             const cancelUserEmailHTML = `
             <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
@@ -401,6 +521,12 @@ exports.postCancelBooking = async (req, res, next)=>{
                     <p><b>Check-out:</b> ${booking.checkOutDate}</p>
                     <p><b>Guests:</b> ${booking.numberOfPeople}</p>
                 </div>
+
+                    ${req.session.refundMsg}
+
+                    <p style="font-size:13px; color:#777;">
+                    If you don’t receive your refund within the expected time, reply to this email and our support team will help you.
+                    </p>
 
                 <p style="margin-top: 20px; font-size: 13px; color: #888;">
                     Thank you for using <b>EasyHome</b>.  
@@ -446,9 +572,11 @@ exports.postCancelBooking = async (req, res, next)=>{
                 html: cancelHostEmailHTML
             });
 
-            return res.redirect('/Allbookings');
+            res.redirect(`/bookingDetails/${bookingId}`);
         }
+        
 }
+
 
 exports.getbookinghistory = async (req, res, next)=>{
     if(!req.isLoggedIn) {
@@ -511,9 +639,11 @@ exports.getSearch = async (req, res, next) => {
     if(!q){
         return res.redirect(req.url);
     }
+    const favouriteHomes = [];
+    if(req.isLoggedIn){
     const userId = req.session.user._id;
-    const favouriteHomes = await user.findById(userId).populate("favourite").select('favourite');
-
+     favouriteHomes = await user.findById(userId).populate("favourite").select('favourite');
+    }
     const homes = await Home.find({
         $or: [
             {houseName: {$regex: q, $options: 'i'}},

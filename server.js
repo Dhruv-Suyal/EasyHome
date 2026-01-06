@@ -16,15 +16,19 @@ const { default: mongoose } = require('mongoose');
 const authRouter = require('./routes/auth');
 const multer = require('multer');
 const sendMail = require("./utils/sendMail");
+const Razorpay = require('razorpay');
+const { truncate } = require('fs/promises');
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+const home = require('./models/data');
 
 const store = new mongoDbStore({
     uri:  process.env.MONGO_URL,
     collection: 'sessions'
 })
+
 
 const filefilter = (req, file, cb)=>{
     if(file.mimetype.startsWith('image/')){
@@ -58,10 +62,16 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'src')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/host/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/host/bookingDetails/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/homes/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/bookingDetails/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/booking/uploads', express.static(path.join(__dirname, 'uploads')));
 
+
+
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
 app.use(multer({storage: multerStorage, fileFilter: filefilter}).single('photoUrl'));
 
 app.use(session({
@@ -83,7 +93,25 @@ app.use((req, res, next)=>{
 app.use(authRouter);
 app.use(storeRouter);
 app.use('/host', hostRouter);
+app.use("/fix", async (req,res)=>{
+
+    console.log("Fixing existing records...");
+  await home.updateMany(
+    { ratings: { $exists: false } },
+    { $set: { ratings: 5 } }
+  );
+
+  await home.updateMany(
+    { cancellationCount: { $exists: false } },
+    { $set: { cancellationCount: 0 } }
+  );
+
+  res.send("Updated existing records");
+});
+
 app.use('/', errorPage);
+
+
 
 const port = process.env.PORT || 3000;
 

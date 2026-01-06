@@ -1,5 +1,5 @@
 const express = require('express');
-const {homeList, getbooking,getIndex,getFavouriteList, homeDetails, postFavouriteList, deleteFavourite, postbooking, getAllBookings, postCancelBooking, getbookinghistory, getAutoComplete, getSearch, terms, contact, privacyPolicy, cookiePolicy, desclaimer, faq, helpCenter, safetyTips} = require('../controller/store');
+const {homeList, getbooking,getIndex,getFavouriteList, homeDetails, postFavouriteList, deleteFavourite, postbooking, getAllBookings, postCancelBooking, getbookinghistory, getAutoComplete, getSearch, terms, contact, privacyPolicy, cookiePolicy, desclaimer, faq, helpCenter, safetyTips, getPaymentPage, postPaymentPage, postPaymentVerify, bookingDetail} = require('../controller/store');
 
 const storeRouter = express.Router();
 
@@ -24,5 +24,9 @@ storeRouter.get("/desclaimer", desclaimer);
 storeRouter.get("/faq", faq);
 storeRouter.get("/helpCenter",helpCenter);
 storeRouter.get("/safetyTips", safetyTips);
+storeRouter.get("/payment/:bookingId", getPaymentPage);
+storeRouter.post("/payment/:bookingId", postPaymentPage);
+storeRouter.post("/payment-verify", postPaymentVerify);
+storeRouter.get("/bookingDetails/:bookingId", bookingDetail);
 
 module.exports = storeRouter;
