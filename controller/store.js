@@ -289,7 +289,7 @@ exports.postPaymentPage = async (req, res, next)=>{
     await booking.save();
     res.json({
         success: true,
-        key: process.env.RAZORPAY_KEY_ID,
+        key: process.env.RazorPay_Key_ID,
         order: order
     })
 }
