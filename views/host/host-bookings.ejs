@@ -231,20 +231,32 @@
                             <p class="text-gray-400 text-xs">Total</p>
                             <p class="text-xl font-bold text-emerald-400">₹<%= b.totalPrice %></p>
                         </div>
-
                         <!-- ACTION BUTTONS MOBILE -->
                         <div class="flex gap-3 pt-2">
+                             <% if(b.status === 'Pending'){ %>
                             <form class="w-1/2 cursor-pointer" action="/host/booking/<%= b._id %>/confirm" method="POST">
                                 <button class="w-full py-2 rounded-lg bg-emerald-600/70 hover:bg-emerald-600 text-white text-xs font-medium cursor-pointer">
                                     Confirm
                                 </button>
                             </form>
-
+                        <% } %>
+                        <% if(b.status === 'Pending'){ %>
+                             <% if(b.cancellable){ %>
                             <form class="w-1/2 cursor-pointer" action="/host/booking/<%= b._id %>/cancel" method="POST">
                                 <button class="w-full py-2 rounded-lg bg-red-600/70 hover:bg-red-600 text-white text-xs font-medium cursor-pointer">
                                     Cancel
                                 </button>
                             </form>
+                            <% }} %>
+                             <% if(b.status === 'Confirmed'){ %>
+                            <a href="/host/bookingDetails/<%= b._id %>">
+                                <button class="w-full py-2 px-2 rounded-lg bg-blue-600/70 
+                                               hover:bg-blue-600 text-white 
+                                               transition font-medium">
+                                    Verify Guest
+                                </button>
+                            </a>
+                            <% } %>
                         </div>
 
                     </div>
