@@ -250,6 +250,8 @@ exports.postbooking = [
     } else {
       console.warn("⚠️ User email not found in form or session.");
     }
+
+    console.log("Go to Payment Page ");
     
     res.redirect(`/payment/${booking._id}`);
     }

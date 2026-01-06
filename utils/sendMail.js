@@ -10,8 +10,11 @@ const sendMail = async ({to, subject, html})=>{
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth:{
+            type:"OAUTH2",
             user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS
+            clientId: process.env.Google_Client_ID,
+            clientSecret: process.env.Google_Client_Secret,
+            refreshToken: process.env.GOOGLE_REFRESH_TOKEN
         }
     });
     await transporter.sendMail({
