@@ -319,7 +319,7 @@ exports.getAllBookings = (req, res, next)=>{
         return  res.redirect('/login');
     }
     const userId = req.session.user._id;
-    Booking.find({user: userId , status: { $in: ["Pending", "Confirmed"] } }).populate('home').sort({createdAt: -1}).then((bookings)=>{
+    Booking.find({user: userId , status: { $in: ["Pending", "Confirmed", "checkedIn"] } }).populate('home').sort({createdAt: -1}).then((bookings)=>{
         res.render('store/All-booking', {bookings: bookings, pageTittle:'All Bookings', currentPage:'booking', isLoggedIn:req.isLoggedIn, user: req.session.user});
     }).catch(err=>{
         console.log(err);
@@ -585,7 +585,7 @@ exports.getbookinghistory = async (req, res, next)=>{
         return res.redirect('/login');
     }
     const userId = req.session.user._id;
-    const bookings = await Booking.find({user: userId}).populate('home');
+    const bookings = await Booking.find({user: userId, status: {$in: ["Cancelled", "Completed/*"]} }).populate('home');
     res.render('store/booking-history', {pageTittle:'Booking History', currentPage:'booking-history',booking:bookings, isLoggedIn:req.isLoggedIn, user: req.session.user});
 
 }

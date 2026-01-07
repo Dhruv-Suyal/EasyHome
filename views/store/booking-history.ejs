@@ -1,84 +1,179 @@
 <%- include('../partials/header') %>
 </head>
+
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
 <%- include('../partials/nav') %>
-<!-- PAGE WRAPPER -->
-<section class="max-w-7xl mx-auto px-4 py-10 pt-20">
 
-    <!-- PAGE TITLE -->
-    <h1 class="text-3xl font-bold mb-10 flex items-center gap-2">
-        📖 Booking History
+<section class="max-w-6xl mx-auto px-4 py-10 pt-28">
+
+    <h1 class="text-3xl font-bold mb-8 flex items-center gap-2">
+        🧾 Your Bookings
     </h1>
 
-    <!-- TWO BLOCK LAYOUT -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <% 
+      function formatDate(dateString){
+        const d = new Date(dateString);
+        return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+      }
+    %>
 
-        <!-- ✅ COMPLETED BOOKINGS -->
-        <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
-            <h2 class="text-xl font-semibold text-green-400 mb-6">
-                ✅ Completed Bookings
-            </h2>
-            <% booking.forEach((booking)=>{ %>
-                <% if(booking.status === 'Completed'){ %>
-            <!-- CARD -->
-            <div class="space-y-4">
-                <div class="bg-black/40 rounded-lg p-5 border border-white/10 hover:shadow-lg transition">
-                    <h3 class="text-lg font-semibold">
-                       <%= booking.home.houseName %>
-                    </h3>
-                    <p class="text-gray-400 text-sm">
-                        <%= booking.home.location %>
-                    </p>
+    <div class="space-y-6">
 
-                    <div class="mt-3 text-sm text-gray-300 space-y-1">
-                        <p>Check-in: <%= booking.home.checkInDate %></p>
-                        <p>Check-out:<%= booking.home.checkOutDate %></p>
-                        <p>Total: <%= booking.totalPrice %></p>
+        <% booking.forEach(b => { %>
+            <% if(b.status === 'Cancelled' || 'Completed' ){ %>
+
+        <!-- BOOKING CARD -->
+        <div class="bg-black/40 border border-white/10 rounded-2xl overflow-hidden hover:shadow-2xl hover:scale-[1.01] transition">
+
+            <div class="flex flex-col md:flex-row">
+
+                <!-- IMAGE with fixed size -->
+                <div class="md:w-1/3 w-full">
+                    <img src="<%= b.home.photoUrl %>"
+                         class="w-full aspect-video object-cover"
+                         alt="Home Image">
+                </div>
+
+                <!-- CONTENT -->
+                <div class="flex-1 p-6 flex flex-col justify-between">
+
+                    <div>
+
+                        <!-- NAME + STATUS -->
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+
+                            <h2 class="text-xl font-semibold">
+                                <%= b.home.houseName %>
+                            </h2>
+
+                            <% if(b.status === 'Completed'){ %>
+                                <span class="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
+                                    Confirmed
+                                </span>
+                            <% } else if(b.status === 'Cancelled'){ %>
+                                <span class="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
+                                    Cancelled
+                                </span>
+                            <% } %>
+
+                        </div>
+
+                        <!-- LOCATION -->
+                        <p class="text-gray-400 text-sm mt-1">
+                            📍 <%= b.home.location %>
+                        </p>
+
+                        <!-- DETAILS -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-sm">
+
+                            <p>
+                                <span class="text-gray-400">Check-in:</span>
+                                <span class="font-semibold text-gray-200">
+                                    <%= formatDate(b.checkInDate) %>
+                                </span>
+                            </p>
+
+                            <p>
+                                <span class="text-gray-400">Check-out:</span>
+                                <span class="font-semibold text-gray-200">
+                                    <%= formatDate(b.checkOutDate) %>
+                                </span>
+                            </p>
+
+                            <p>
+                                <span class="text-gray-400">Total Price:</span>
+                                <span class="font-semibold text-gray-200">
+                                   ₹ <%= b.totalPrice %>
+                                </span>
+                            </p>
+
+                            <p>
+                                <span class="text-gray-400">Guests:</span>
+                                <span class="font-semibold text-gray-200">
+                                   <%= b.numberOfPeople || '—' %>
+                                </span>
+                            </p>
+
+                        </div>
                     </div>
 
-                    <span class="inline-block mt-4 px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
-                        <%= booking.status %>
-                    </span>
-                </div>
-                <% } %>
-            <% }) %>
-            </div>
-        <!-- ❌ CANCELLED BOOKINGS -->
-         
-        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-6">
-            <h2 class="text-xl font-semibold text-red-400 mb-6">
-                ❌ Cancelled Bookings
-            </h2>
-            <% booking.forEach((booking)=>{ %>
-                <% if(booking.status === 'Cancelled'){ %>
-            <div class="space-y-4">
-                <div class="bg-black/40 rounded-lg p-5 border border-white/10">
-                    <h3 class="text-lg font-semibold">
-                          <%= booking.home.houseName %>
-                    </h3>
-                    <p class="text-gray-400 text-sm">
-                        <%= booking.home.location %>
-                    </p>
+                    <!-- REMOVE BUTTON (opens modal) -->
+                    <div class="mt-6 flex justify-end">
 
-                    <div class="mt-3 text-sm text-gray-300 space-y-1">
-                        <p>Check-in: <%= booking.checkInDate %></p>
-                        <p>Check-out: <%= booking.checkOutDate %></p>
-                        <p>Total: <%= booking.totalPrice%></p>
+                        <button 
+                           class="px-5 py-2 rounded-xl text-sm font-semibold bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30"
+                           onclick="openConfirmModal('<%= b._id %>', '<%= b.home.houseName %>')">
+                            🗑️ Remove Booking
+                        </button>
+
                     </div>
 
-                    <span class="inline-block mt-4 px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
-                        <%= booking.status %>
-                    </span>
                 </div>
             </div>
-            <% } %>
-            <% })%>
-
         </div>
+        <% } %>
+        <% }) %>
+
+        <% if(booking.length === 0){ %>
+            <p class="text-center text-gray-400 py-10">
+                No bookings found.
+            </p>
+        <% } %>
 
     </div>
-</section>
-<%- include('../partials/footer') %>
 
+</section>
+
+<!-- CONFIRMATION MODAL -->
+<div id="confirmModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+
+    <div class="bg-gray-900 border border-white/10 rounded-2xl p-6 max-w-md w-full mx-3">
+
+        <h3 class="text-xl font-semibold mb-2">
+            Remove booking?
+        </h3>
+
+        <p class="text-gray-400 text-sm mb-4">
+            You are about to remove:
+            <span id="modalHouse" class="text-white font-semibold"></span>
+        </p>
+
+        <!-- POST FORM (You handle backend) -->
+        <form id="deleteForm" method="POST">
+
+            <div class="flex justify-end gap-3">
+
+                <button type="button"
+                        onclick="closeConfirmModal()" 
+                        class="px-4 py-2 rounded-lg border border-white/20">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700">
+                    Yes, remove
+                </button>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+  function openConfirmModal(id, house){
+      document.getElementById('confirmModal').classList.remove('hidden');
+      document.getElementById('modalHouse').innerText = house;
+
+      // POST action
+      document.getElementById('deleteForm').action = `/booking/delete/${id}`;
+  }
+
+  function closeConfirmModal(){
+      document.getElementById('confirmModal').classList.add('hidden');
+  }
+</script>
+
+<%- include('../partials/footer') %>
 </body>
 </html>

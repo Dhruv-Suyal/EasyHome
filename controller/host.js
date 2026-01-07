@@ -371,7 +371,7 @@ exports.VerifyGuestOtp = async (req, res, next)=>{
         return res.redirect(`/host/bookingDetails/${bookingId}`);
     }
     booking.status = 'checkedIn';
-    booking.checkInAt = now;
+    booking.checkInAt = today;
     await booking.save();
     req.session.otpMsg = 'Otp Verified! Guest Successfully CheckIn';
    return res.redirect(`/host/bookingDetails/${bookingId}`);
