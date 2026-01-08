@@ -36,7 +36,12 @@
                                     <span class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm backdrop-blur-md bg-yellow-600/80 text-white/90 border border-yellow-500/30 font-semibold">
                                         ⏳ Pending
                                     </span>
+                                <% }else if(booking.status === 'checkedIn') { %>
+                                    <span class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm backdrop-blur-md bg-blue-600/80 text-white/90 border border-yellow-500/30 font-semibold">
+                                        Checked-in
+                                    </span>
                                 <% } %>
+                                
                             </div>
                         </div>
 
