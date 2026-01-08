@@ -203,7 +203,7 @@ exports.getMyBookings = async (req, res, next)=>{
             });
         }
         const homeId = homes.map(home => home._id);
-        let bookings = await Booking.find({home: {$in: homeId}, status: { $in: ["Pending", "Confirmed"] } }).populate('user').populate('home').sort({createdAt: -1});
+        let bookings = await Booking.find({home: {$in: homeId}, status: { $in: ["Pending", "Confirmed", "checkedIn"] } }).populate('user').populate('home').sort({createdAt: -1});
         const now = new Date();
         bookings = bookings.map((b)=>{
             const obj = b.toObject();
