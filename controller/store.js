@@ -367,7 +367,6 @@ exports.postFavouriteList = async (req, res, next)=>{
         await Fuser.save();
     }
      res.redirect('/favourites')
-   
 }
 
 exports.getIndex = async (req, res, next)=>{
@@ -585,9 +584,28 @@ exports.getbookinghistory = async (req, res, next)=>{
         return res.redirect('/login');
     }
     const userId = req.session.user._id;
-    const bookings = await Booking.find({user: userId, status: {$in: ["Cancelled", "Completed/*"]} }).populate('home');
-    res.render('store/booking-history', {pageTittle:'Booking History', currentPage:'booking-history',booking:bookings, isLoggedIn:req.isLoggedIn, user: req.session.user});
+    const bookings = await Booking.find({user: userId, status: {$in: ["Cancelled", "Completed"]} }).sort({createdAt:-1}).populate('home');
+    const deleteMsg = req.session.deleteMsg || null;
+    req.session.deleteMsg = null;
+    res.render('store/booking-history', {pageTittle:'Booking History', deleteMsg:deleteMsg, currentPage:'booking-history',booking:bookings, isLoggedIn:req.isLoggedIn, user: req.session.user});
 
+}
+
+exports.postDeleteBooking = async (req, res, next)=>{
+    if(!req.isLoggedIn){
+        return res.redirect('/login');
+    }
+    const bookingId = req.params.id;
+    if(!bookingId){
+        return res.redirect('/bookinghistory');
+    }
+    const deleteBooking = await Booking.findOneAndDelete({_id: bookingId, status:{$in: ["Cancelled", "Completed"]}});
+    if(!deleteBooking){
+        req.session.deleteMsg = 'Only Cancelled or completed booking can be removed';
+        return res.redirect('/bookinghistory');
+    }
+    req.session.deleteMsg = 'Booking remove successfully';
+    res.redirect('/bookinghistory');
 }
 
 exports.getAutoComplete = async (req, res, next) => {

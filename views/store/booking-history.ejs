@@ -1,4 +1,18 @@
 <%- include('../partials/header') %>
+<style>
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+
+
 </head>
 
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
@@ -16,6 +30,28 @@
         return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
       }
     %>
+    <% if (deleteMsg) { %>
+        <div 
+        id="deleteAlert"
+        class="mb-6 flex items-start gap-3 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-green-300
+                animate-[slideDown_0.4s_ease-out]">
+
+            <!-- ICON -->
+            <span class="text-xl leading-none">✅</span>
+
+            <!-- MESSAGE -->
+            <p class="flex-1 text-sm sm:text-base font-medium">
+                <%= deleteMsg %>
+            </p>
+
+            <!-- CLOSE BUTTON -->
+            <button 
+            onclick="document.getElementById('deleteAlert').remove()"
+            class="text-green-300 hover:text-white transition text-lg leading-none">
+                ✕
+            </button>
+        </div>
+    <% } %>
 
     <div class="space-y-6">
 
@@ -48,7 +84,7 @@
 
                             <% if(b.status === 'Completed'){ %>
                                 <span class="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
-                                    Confirmed
+                                    Completed
                                 </span>
                             <% } else if(b.status === 'Cancelled'){ %>
                                 <span class="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
@@ -161,6 +197,12 @@
 </div>
 
 <script>
+    
+  setTimeout(() => {
+    const alert = document.getElementById('deleteAlert');
+    if (alert) alert.remove();
+  }, 5000);
+
   function openConfirmModal(id, house){
       document.getElementById('confirmModal').classList.remove('hidden');
       document.getElementById('modalHouse').innerText = house;
