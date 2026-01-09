@@ -252,6 +252,7 @@ exports.postConfirmBookings = async (req, res, next)=>{
     booking.qrcode = await QRCode.toDataURL(dataToEncode);
 
     await booking.save();
+    await booking.home.save();
     req.session.hostMsg = "Booking successfully Confirmed";
 
     if(booking.email || booking.user.email){
@@ -471,6 +472,7 @@ exports.postCancel = async (req, res, next)=>{
     // deduct rating per cancellation
     home.ratings = Math.max(1, home.ratings - 0.2);
     await booking.save();
+    await home.save();
     req.session.hostMsg = "Booking successfully Cancelled";
 
     const cancelHostEmail = `<h2 style="color:#e76f51;">Booking Cancellation Confirmed</h2>
