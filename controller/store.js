@@ -107,11 +107,8 @@ exports.postbooking = [
             return res.redirect('/login');
         }
     const homeId = req.params.homeId;
-    const user = req.session.user._id;
-    const userSession = req.session.user;
-    console.log(req.body);
+    const userId = req.session.user._id;
     const home = await Home.findById(homeId).populate("host");
-
 
     const {checkInDate, checkOutDate, numberOfPeople, totalPrice, email, countryCode, phone, specialRequests, name} = req.body;
     const errors = validationResult(req);
@@ -142,7 +139,7 @@ exports.postbooking = [
     }
     const duplicateBooking = await Booking.findOne({
         home: homeId,
-        user: user,
+        user: userId,
         status: {$in: ["Pending", "Confirmed", "checkedIn"]},
         checkInDate: {$lt: checkOut},
         checkOutDate: {$gt: checkIn}
@@ -157,12 +154,12 @@ exports.postbooking = [
 
     async function renderWithErrors() {
         const bookings = await Booking.find({home: homeId, status: {$in: ["Pending", "Confirmed", "checkedIn"]}}).select('checkInDate checkOutDate');
-    const blocked = [];
-    bookings.forEach(b =>{
-        let start = new Date(b.checkInDate);
-        let end = new Date(b.checkOutDate);
-        end.setDate(end.getDate() + 1);
-        blocked.push({from: start, to: end});
+        const blocked = [];
+        bookings.forEach(b =>{
+            let start = new Date(b.checkInDate);
+            let end = new Date(b.checkOutDate);
+            end.setDate(end.getDate() + 1);
+            blocked.push({from: start, to: end});
     });
 
         return res.status(422).render('store/booking',
@@ -172,121 +169,46 @@ exports.postbooking = [
              home:home, pageTittle:'Booking', currentPage:'booking', isLoggedIn:req.isLoggedIn, user: req.session.user});
     }
 
-    const booking = new Booking({name: name, home: homeId, user: user, checkInDate: checkInDate, checkOutDate: checkOutDate, numberOfPeople: numberOfPeople, totalPrice: totalPrice, email: email, countryCode: countryCode, phoneNumber: phone, specialRequests: specialRequests});
-    await booking.save();
-
-    const hostEmail = home.host?.email;
-
-    if (hostEmail) {
-      await sendMail({
-        to: hostEmail,
-        subject: "New Booking Request",
-        html: `
-          <div style="font-family: Arial, sans-serif; padding: 16px;">
-            <h2 style="color:#ff4d4f;">New Booking Request 🏠</h2>
-            <p>Hi ${home.host.name || "Host"},</p>
-            <p><b>${name}</b> has requested to book your home <b>${home.houseName}</b>.</p>
-            <p>
-              <b>Check-in:</b> ${checkInDate}<br/>
-              <b>Check-out:</b> ${checkOutDate}<br/>
-              <b>Guests:</b> ${numberOfPeople}<br/>
-              <b>Total Price:</b> ₹${totalPrice}
-            </p>
-            <p>
-              <b>Guest Contact:</b><br/>
-              Name: ${name}<br/>
-              Email: ${email}<br/>
-              Phone: +${countryCode} ${phone}
-            </p>
-            ${
-              specialRequests
-                ? `<p><b>Special Requests:</b> ${specialRequests}</p>`
-                : ""
-            }
-            <p style="margin-top:16px; font-size:12px; color:#888;">
-              This request is pending your approval. Please log in to your dashboard to confirm or cancel.
-              <a href="https://easyhome-production.up.railway.app/" target="_blank">View Bookings</a>
-            </p>
-          </div>
-        `
-      });
-    } else {
-      console.warn("⚠️ Host email not found for home:", homeId);
-    }
-
-    // ✅ SAFE USER EMAIL (form email first, fallback to session)
-    const userEmail = email || userSession.email;
-
-    if (userEmail) {
-      await sendMail({
-        to: userEmail,
-        subject: "Your Booking Request Was Sent",
-        html: `
-          <div style="font-family: Arial, sans-serif; padding: 16px;">
-            <h2 style="color:#52c41a;">Booking Request Sent ✅</h2>
-            <p>Hi ${name || userSession.name},</p>
-            <p>Your booking request for <b>${home.houseName}</b> has been sent to the host.</p>
-            <p>
-              <b>Check-in:</b> ${checkInDate}<br/>
-              <b>Check-out:</b> ${checkOutDate}<br/>
-              <b>Guests:</b> ${numberOfPeople}<br/>
-              <b>Total Price:</b> ₹${totalPrice}
-            </p>
-            ${
-              specialRequests
-                ? `<p><b>Your special requests:</b> ${specialRequests}</p>`
-                : ""
-            }
-            <p style="margin-top:16px; font-size:13px; color:#555;">
-              The host will review your request and confirm or decline it.
-              You can check the status anytime in your bookings page.
-            </p>
-            <p style="margin-top:16px; font-size:12px; color:#888;">
-              This is an automated message from EasyHome. Please do not reply.
-            </p>
-          </div>
-        `
-      });
-    } else {
-      console.warn("⚠️ User email not found in form or session.");
-    }
-
-    console.log("Go to Payment Page ");
-    
-    res.redirect(`/payment/${booking._id}`);
+    const pendingBooking = {name: name, home: homeId, user: user, checkInDate: checkInDate, checkOutDate: checkOutDate, numberOfPeople: numberOfPeople, totalPrice: totalPrice, email: email, countryCode: countryCode, phoneNumber: phone, specialRequests: specialRequests};
+    req.session.pendingBooking = pendingBooking;
+    res.redirect('/payment');
     }
 ]
 
 exports.getPaymentPage = async (req, res, next)=>{
     const user = req.session.user;
-    console.log(user);
-    if(!user){
+    if(!req.session.isLoggedIn){
+        return res.redirect('/login');
+    }
+    if(!req.session.pendingBooking){
         return res.redirect('/');
     }
-
-    const bookingId = req.params.bookingId;
-    console.log(bookingId);
-    const booking = await Booking.findById(bookingId).populate('home');
-    if(!booking){
+    const home = await Home.findById({_id: req.session.pendingBooking.home});
+    if(!home){
         return res.redirect('/');
     }
-     console.log(booking);
-    res.render('store/payment', {booking: booking, keyId:process.env.RAZORPAY_KEY_ID, pageTittle:'Payment', currentPage:'payment', isLoggedIn:req.isLoggedIn, user: user});
+    res.render('store/payment', {home: home, pendingBooking:req.session.pendingBooking, keyId:process.env.RazorPay_Key_ID, pageTittle:'Payment', currentPage:'payment', isLoggedIn:req.isLoggedIn, user: user});
 }
 
 exports.postPaymentPage = async (req, res, next)=>{
-    const bookingId = req.params.bookingId;
-    const booking = await Booking.findById(bookingId).populate('home');
-    console.log("At post payment page");
-    const options = {
-        amount: booking.totalPrice * 100,
-        currency: "INR",
-        receipt: `receipt_order_${bookingId}`,
-    }
+    const pendingBooking = req.session.pendingBooking;
 
+    if (!pendingBooking) {
+    return res.status(400).json({ success: false });
+    }
+    
+    const options = {
+        amount: Number(pendingBooking.totalPrice) * 100,
+        currency: "INR",
+        receipt: `receipt_order_${pendingBooking.checkInDate}`,
+    }
+    
     const order = await instance.orders.create(options);
-    booking.orderId = order.id;
-    await booking.save();
+
+
+    pendingBooking.orderId = order.id;
+    pendingBooking.amount = order.amount;
+    req.session.pendingBooking = pendingBooking;
     res.json({
         success: true,
         key: process.env.RazorPay_Key_ID,
@@ -295,11 +217,24 @@ exports.postPaymentPage = async (req, res, next)=>{
 }
 
 exports.postPaymentVerify = async (req, res, next)=>{
-    console.log(req.headers);
-    console.log(req.body);
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId } = req.body;
-    const booking = await Booking.findById(bookingId);
+    if (!req.session.isLoggedIn || !req.session.user) {
+    return res.status(401).json({ status: false });
+}   
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
+    const pendingBooking = req.session.pendingBooking;
+    if (!pendingBooking) {
+    return res.status(400).json({ status: false, message: "Session expired" });
+    }
+    if (razorpay_order_id !== pendingBooking.orderId) {
+    return res.status(400).json({ status: false });
+    }
+    if (pendingBooking.amount !== pendingBooking.totalPrice * 100) {
+    return res.status(400).json({ status: false });
+    }
 
+    const home = await Home.findById({_id: pendingBooking.home}).populate('host');
+    const user = req.session.user;
+    
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSign = crypto
@@ -308,7 +243,108 @@ exports.postPaymentVerify = async (req, res, next)=>{
                         .digest("hex");
     
     if(expectedSign === razorpay_signature){
-        await Booking.findByIdAndUpdate(bookingId, {paymentStatus: 'Paid', paymentId: razorpay_payment_id});
+        const booking = new Booking({home:home._id, user:user._id, paymentId:razorpay_payment_id, orderId:razorpay_order_id, paymentStatus:'Paid', name:pendingBooking.name, checkInDate: pendingBooking.checkInDate, checkOutDate: pendingBooking.checkOutDate, numberOfPeople: pendingBooking.numberOfPeople, totalPrice: pendingBooking.totalPrice, email: pendingBooking.email, countryCode: pendingBooking.countryCode, phoneNumber: pendingBooking.phoneNumber, specialRequests: pendingBooking.specialRequests});
+        await booking.save();
+        const hostEmail = home.host?.email;
+        if(hostEmail) {
+            await sendMail({
+            to: hostEmail,
+            subject: "New Booking Request",
+            html: `
+            <div style="font-family: Arial, sans-serif; padding: 16px;">
+                <h2 style="color:#ff4d4f;">New Booking Request 🏠</h2>
+                <p>Hi ${home.host.username || "Host"},</p>
+                <p><b>${user.username || "Guest"}</b> has requested to book your home <b>${home.houseName}</b>.</p>
+                <p>
+                <b>Check-in:</b> ${pendingBooking.checkInDate}<br/>
+                <b>Check-out:</b> ${pendingBooking.checkOutDate}<br/>
+                <b>Guests:</b> ${pendingBooking.numberOfPeople}<br/>
+                <b>Total Price:</b> ₹${pendingBooking.totalPrice}
+                </p>
+                <p>
+                <b>Guest Contact:</b><br/>
+                Name: ${user.username}<br/>
+                Email: ${pendingBooking.email || user.email}<br/>
+                Phone: +${pendingBooking.countryCode} ${pendingBooking.phone}
+                </p>
+                ${
+                pendingBooking.specialRequests
+                    ? `<p><b>Special Requests:</b> ${pendingBooking.specialRequests || ''}</p>`
+                    : ""
+                }
+                <p style="margin-top:16px; font-size:12px; color:#888;">
+                This request is pending your approval. Please log in to your dashboard to confirm or cancel.
+                <a href="https://easyhome-production.up.railway.app/" target="_blank">View Bookings</a>
+                </p>
+            </div>
+            `
+        });
+        } else {
+        console.warn("⚠️ Host email not found for home:", homeId);
+        }
+
+        // ✅ SAFE USER EMAIL (form email first, fallback to session)
+        const userEmail = pendingBooking.email || user.email;
+
+        if (userEmail) {
+        await sendMail({
+            to: userEmail,
+            subject: "Your Booking Request Was Sent",
+            html: `
+            <div style="font-family: Arial, sans-serif; padding: 16px;">
+                <h2 style="color:#52c41a;">Booking Request Sent ✅</h2>
+                <p>Hi ${pendingBooking.name || user.username},</p>
+                <p>Your booking request for <b>${home.houseName}</b> has been sent to the host.</p>
+                <p>
+                <b>Check-in:</b> ${pendingBooking.checkInDate}<br/>
+                <b>Check-out:</b> ${pendingBooking.checkOutDate}<br/>
+                <b>Guests:</b> ${pendingBooking.numberOfPeople}<br/>
+                <b>Total Price:</b> ₹${pendingBooking.totalPrice}
+                </p>
+                ${
+                pendingBooking.specialRequests
+                    ? `<p><b>Your special requests:</b> ${pendingBooking.specialRequests}</p>`
+                    : ""
+                }
+                <p style="margin-top:16px; font-size:13px; color:#555;">
+                The host will review your request and confirm or decline it.
+                You can check the status anytime in your bookings page.
+                </p>
+                <p style="margin-top:16px; font-size:12px; color:#888;">
+                This is an automated message from EasyHome. Please do not reply.
+                </p>
+            </div>
+            `
+        });
+        await sendMail({
+            to:userEmail,
+            subject:"Your Booking payment done Successfully",
+            html: `
+            <div style="font-family: Arial, sans-serif; padding: 16px;">
+                <h2 style="color:#52c41a;">Booking payment done✅</h2>
+                <p>Hi ${pendingBooking.name || user.username},</p>
+                <p>Your booking payment done for <b>${home.houseName}</b></p>
+                <p>
+                <b>Check-in:</b> ${pendingBooking.checkInDate}<br/>
+                <b>Check-out:</b> ${pendingBooking.checkOutDate}<br/>
+                <b>Guests:</b> ${pendingBooking.numberOfPeople}<br/>
+                <b>Total Price:</b> ₹${pendingBooking.totalPrice}
+                </p>
+                
+                <p style="margin-top:16px; font-size:13px; color:#555;">
+                If you cancel the booking before 48 hours of checkIn date you get full refund.
+                otherwise you didn't get your payment back.
+                </p>
+                <p style="margin-top:16px; font-size:12px; color:#888;">
+                This is an automated message from EasyHome. Please do not reply.
+                </p>
+            </div>
+            `
+        })
+        } else {
+        console.warn("⚠️ User email not found in form or session.");
+        }
+        delete req.session.pendingBooking;
         return res.json({status: true});
     }
      return res.status(400).json({status: false});

@@ -25,7 +25,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-400 text-sm">Property Name</p>
-                                <p class="text-white font-semibold text-lg"><%= booking.home.houseName %></p>
+                                <p class="text-white font-semibold text-lg"><%=home.houseName %></p>
                             </div>
                         </div>
                     </div>
@@ -33,15 +33,15 @@
                     <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
                         <div class="p-4 bg-white/5 rounded-lg">
                             <p class="text-gray-400 text-sm mb-1">Check-in</p>
-                            <p class="text-white font-semibold"><%= new Date(booking.checkInDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
+                            <p class="text-white font-semibold"><%= new Date(pendingBooking.checkInDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
                         </div>
                         <div class="p-4 bg-white/5 rounded-lg">
                             <p class="text-gray-400 text-sm mb-1">Check-out</p>
-                            <p class="text-white font-semibold"><%= new Date(booking.checkOutDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
+                            <p class="text-white font-semibold"><%= new Date(pendingBooking.checkOutDate).toLocaleDateString('en-IN', {day: '2-digit', month: 'short'})%></p>
                         </div>
                         <div class="p-4 bg-white/5 rounded-lg">
                             <p class="text-gray-400 text-sm mb-1">Guests</p>
-                            <p class="text-white font-semibold"><%= booking.numberOfPeople %></p>
+                            <p class="text-white font-semibold"><%= pendingBooking.numberOfPeople %></p>
                         </div>
                     </div>
                 </div>
@@ -50,15 +50,15 @@
                 <div class="space-y-3 bg-black/50 rounded-lg p-4 mb-6">
                     <div class="flex justify-between text-gray-300">
                         <span>Base Price</span>
-                        <span>₹<%= (booking.totalPrice * 0.85).toFixed(2) %></span>
+                        <span>₹<%= (pendingBooking.totalPrice * 0.85).toFixed(2) %></span>
                     </div>
                     <div class="flex justify-between text-gray-300">
                         <span>Service Fee</span>
-                        <span>₹<%= (booking.totalPrice * 0.15).toFixed(2) %></span>
+                        <span>₹<%= (pendingBooking.totalPrice * 0.15).toFixed(2) %></span>
                     </div>
                     <div class="border-t border-white/10 pt-3 flex justify-between items-center">
                         <span class="text-white font-semibold">Total Amount</span>
-                        <span class="text-3xl font-bold text-emerald-400">₹<%= booking.totalPrice %></span>
+                        <span class="text-3xl font-bold text-emerald-400">₹<%= pendingBooking.totalPrice %></span>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 1112 2.944a11.954 11.954 0 018.618 3.04A12.02 12.02 0 0121 12"></path>
                         </svg>
-                        <span>Complete Payment - ₹<%= booking.totalPrice %></span>
+                        <span>Complete Payment - ₹<%= pendingBooking.totalPrice %></span>
                     </span>
                 </button>
 
@@ -138,8 +138,7 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     document.getElementById('payBtn').addEventListener('click', async ()=>{
-        const bookingId = "<%= booking._id %>";
-        const res = await fetch(`/payment/${bookingId}`, {
+        const res = await fetch('/payment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -147,13 +146,12 @@
         });
 
         const data = await res.json();
-        console.log(data.success);
+        console.log(data);
         if(!data.success){
             alert('Error creating order. Please try again.');
             return;
         }
-        console.log(data)
-        console.log(data.order)
+
         var option ={
             key: data.key,
             amount: data.order.amount,
@@ -163,23 +161,26 @@
             order_id: data.order.id,
             handler: async function(response){
                 console.log("HANDLER FIRED");
-                await fetch("/payment-verify", {
+                const resVerify = await fetch("/payment-verify", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        bookingId: bookingId,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_signature: response.razorpay_signature
                     })
                 });
-            window.location.href = '/Allbookings';
+                const resVerifyData = await resVerify.json();
+                if(resVerifyData.status){
+                    window.location.href = '/Allbookings';
+                }
+                else{
+                     alert("Payment verification failed");
+                }
             },
         }
-        
-        console.log(option)
         const rzp1 = new Razorpay(option);
         rzp1.open();
     })

@@ -93,21 +93,6 @@ app.use((req, res, next)=>{
 app.use(authRouter);
 app.use(storeRouter);
 app.use('/host', hostRouter);
-app.use("/fix", async (req,res)=>{
-
-    console.log("Fixing existing records...");
-  await home.updateMany(
-    { ratings: { $exists: false } },
-    { $set: { ratings: 5 } }
-  );
-
-  await home.updateMany(
-    { cancellationCount: { $exists: false } },
-    { $set: { cancellationCount: 0 } }
-  );
-
-  res.send("Updated existing records");
-});
 
 app.use('/', errorPage);
 
