@@ -28,7 +28,7 @@ tommorrow.setDate(tommorrow.getDate() +1);
 const twoDayLater = new Date(today);
 twoDayLater.setDate(twoDayLater.getDate() +2);
 
-const bookings = await booking.find({status: 'Confirmed'}).populate({path: 'home', populate: {path: 'host'}}).populate('user');
+const bookings = await booking.find({status: {$in: ['Confirmed', 'checkedIn' ]} }).populate({path: 'home', populate: {path: 'host'}}).populate('user');
 
     for( const b of bookings){
         const checkIn = new Date(b.checkInDate);
