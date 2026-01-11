@@ -6,6 +6,7 @@ const instance = require('../utils/razorpay');
 
 module.exports = async function sendBookingReminder(){
     console.log("sendBookingReminder function run...")
+
 const sameDay = (date1, date2)=>{
     return(
         date1.getFullYear() === date2.getFullYear() &&
@@ -13,6 +14,12 @@ const sameDay = (date1, date2)=>{
         date1.getDate() === date2.getDate()
     );
 }
+
+const sameOrAfterDay = (a, b) => {
+  const d1 = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  const d2 = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+  return d1 >= d2;
+};
 
 
 const today = new Date();
@@ -164,7 +171,7 @@ const bookings = await booking.find({status: 'Confirmed'}).populate({path: 'home
 
     }
 
-    if(sameDay(checkOut, today) && !b.checkOutMailSent){
+    if(sameOrAfterDay(checkOut, today) && !b.checkOutMailSent){
         if(b.email || b.user.email){
         await sendMail({
             to: b.email || b.user.email,
