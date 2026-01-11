@@ -470,7 +470,7 @@ exports.postCancel = async (req, res, next)=>{
     booking.status = 'Cancelled';
     home.cancellationCount += 1;
     // deduct rating per cancellation
-    home.ratings = Math.max(1, home.ratings - 0.2);
+    home.ratings = Math.max(0.5, home.ratings - 0.2);
     await booking.save();
     await home.save();
     req.session.hostMsg = "Booking successfully Cancelled";

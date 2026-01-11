@@ -1,11 +1,11 @@
-const corn = require('node-cron');
 const booking = require('../models/booking');
-const sendMail = require('./sendMail');
+const sendMail = require('../utils/sendMail');
 const Home = require('../models/data');
-const instance = require('./razorpay');
+const instance = require('../utils/razorpay');
 
-console.log('Booking cron job initialized');
 
+module.exports = async function sendBookingReminder(){
+    console.log("sendBookingReminder function run...")
 const sameDay = (date1, date2)=>{
     return(
         date1.getFullYear() === date2.getFullYear() &&
@@ -14,44 +14,18 @@ const sameDay = (date1, date2)=>{
     );
 }
 
-corn.schedule('0 * * * *', async ()=>{
-    const now = new Date();
-    const sixHoursFromNow = new Date(now.getTime() + 6 * 60 * 60 * 1000);
-    const bookings = await booking.find({
-        status: 'Pending',
-        checkInDate: {$gt: now, $lte: sixHoursFromNow}
-    });
-    for(const b of bookings){
-        b.status = 'Cancelled';
-        if(b.paymentStatus === 'Paid'){
-            // Process refund via Razorpay
-                    const refund = await instance.payments.refund(b.paymentId, {
-                        amount: b.totalPrice * 100,
-                        speed: 'normal',
-                    });
-                    b.refundId = refund.id;
-                    b.paymentStatus = 'Refunded';
-        }
-        await b.save();
-    }
-})
 
-corn.schedule('0 0 9 * * *', async ()=>{
-    console.log('Running booking reminder cron job');
-    const today = new Date();
+const today = new Date();
+const tommorrow = new Date(today);
+tommorrow.setDate(tommorrow.getDate() +1);
+const twoDayLater = new Date(today);
+twoDayLater.setDate(twoDayLater.getDate() +2);
 
-    const tommorrow = new Date(today);
-    tommorrow.setDate(tommorrow.getDate() +1);
-
-    const twoDayLater = new Date(today);
-    twoDayLater.setDate(twoDayLater.getDate() +2);
-
-    const bookings = await booking.find({status: 'Confirmed'}).populate('home').populate('user');
+const bookings = await booking.find({status: 'Confirmed'}).populate({path: 'home', populate: {path: 'host'}}).populate('user');
 
     for( const b of bookings){
         const checkIn = new Date(b.checkInDate);
         const checkOut = new Date(b.checkOutDate);
-        const home = await Home.findById(b.home._id).populate('host');
 
         // 2 day reminder
         if(sameDay(checkIn, twoDayLater) && !b.twoDayReminderSent){
@@ -88,19 +62,19 @@ corn.schedule('0 0 9 * * *', async ()=>{
                     </div>`
             })
 
-            if(home.host.email){
+            if(b.home.host.email){
                 await sendMail({
-                to: home.host.email,
+                to: b.home.host.email,
                 subject: `Reminder: Guest ${b.name || b.user.username} is arriving in 2 days!`,
                 html: `<div style="font-family: Arial, sans-serif; padding:20px;">
                         <h2 style="color:#ff5a5f;">Upcoming Guest Arrival</h2>
 
                         <p style="font-size:14px;">
-                            Hello <b>${home.host.username ? home.host.username : 'Sir'}</b>,
+                            Hello <b>${b.home.host.username ? b.home.host.username : 'Sir'}</b>,
                         </p>
 
                         <p style="font-size:14px;">
-                            A guest will be checking in at your property <b>${home.houseName ? home.houseName : ''}</b> in 2 days.
+                            A guest will be checking in at your property <b>${b.home.houseName ? b.home.houseName : ''}</b> in 2 days.
                         </p>
 
                         <p style="font-size:14px;">
@@ -117,6 +91,7 @@ corn.schedule('0 0 9 * * *', async ()=>{
             }
         b.twoDayReminderSent = true;
         await b.save();
+        console.log("Two days reminder send successfully");
         }
         
         // 1 day reminder
@@ -158,19 +133,19 @@ corn.schedule('0 0 9 * * *', async ()=>{
                         </div>`
             })
         
-            if(home.host.email){
+            if(b.home.host.email){
                 await sendMail({
-                    to: home.host.email,
+                    to: b.home.host.email,
                     subject: `Reminder: Guest ${b.name || b.user.username} is arriving tomorrow!`,
                     html: `<div style="font-family: Arial, sans-serif; padding:20px;">
                             <h2 style="color:#28a745;">Guest Check-in Tomorrow</h2>
 
                             <p>
-                                Hi <b>${home.host.username ? home.host.username : 'Sir'}</b>,
+                                Hi <b>${b.home.host.username ? b.home.host.username : 'Sir'}</b>,
                             </p>
 
                             <p>
-                                Your guest <b>${b.name || b.user.username}</b> will be checking in tomorrow at <b>${b.home.houseName || home.houseName}</b>.
+                                Your guest <b>${b.name || b.user.username}</b> will be checking in tomorrow at <b>${b.home.houseName}</b>.
                             </p>
 
                             <p>
@@ -185,6 +160,8 @@ corn.schedule('0 0 9 * * *', async ()=>{
             }
             b.oneDayReminderSent = true;
             await b.save();
+            console.log("one days reminder send successfully");
+
     }
 
     if(sameDay(checkOut, today) && !b.checkOutMailSent){
@@ -204,7 +181,7 @@ corn.schedule('0 0 9 * * *', async ()=>{
                         </p>
 
                         <p style="font-size:14px; color:#555;">
-                        Your stay at <b>${b.home.houseName || home.houseName}</b> has been successfully completed.
+                        Your stay at <b>${b.home.houseName}</b> has been successfully completed.
                         </p>
 
                         <p style="font-size:14px;">
@@ -220,19 +197,19 @@ corn.schedule('0 0 9 * * *', async ()=>{
         })
         }
 
-        if(home.host.email){
+        if(b.home.host.email){
             await sendMail({
-                to: home.host.email,
+                to: b.home.host.email,
                 subject:"Booking completed",
                 html: `<div style="font-family: Arial, sans-serif; padding:20px;">
                         <h2 style="color:#1890ff;">Booking Completed</h2>
 
                         <p>
-                            Hi <b>${home.host.username ? home.host.username : 'Sir'}</b>,
+                            Hi <b>${b.home.host.username ? b.home.host.username : 'Sir'}</b>,
                         </p>
 
                         <p>
-                            The booking at <b>${home.houseName }</b> has been completed successfully.
+                            The booking at <b>${b.home.houseName }</b> has been completed successfully.
                         </p>
 
                         <p style="font-size:12px; color:#888;">
@@ -244,8 +221,8 @@ corn.schedule('0 0 9 * * *', async ()=>{
         b.checkOutMailSent = true;
         b.status = 'Completed';
         await b.save();
-    }
+        console.log("Booking completed successfully and mail sent....");
 
     }
-
-})
+}
+}
