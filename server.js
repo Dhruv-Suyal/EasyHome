@@ -1,5 +1,4 @@
 require('dotenv').config({path: 'contact.env'});
-require('./utils/booking-cron');
 console.log("MAIL_USER:", process.env.MAIL_USER);
 console.log("MAIL_PASS:", process.env.MAIL_PASS ? "Loaded ✅" : "Missing ❌");
 
@@ -14,15 +13,13 @@ const hostRouter = require('./routes/host');
 const { errorPage } = require('./controller/store');
 const { default: mongoose } = require('mongoose');
 const authRouter = require('./routes/auth');
+const internalRouter = require('./routes/internal');
+
 const multer = require('multer');
-const sendMail = require("./utils/sendMail");
-const Razorpay = require('razorpay');
-const { truncate } = require('fs/promises');
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
-const home = require('./models/data');
 
 const store = new mongoDbStore({
     uri:  process.env.MONGO_URL,
@@ -93,7 +90,7 @@ app.use((req, res, next)=>{
 app.use(authRouter);
 app.use(storeRouter);
 app.use('/host', hostRouter);
-
+app.use(internalRouter);
 app.use('/', errorPage);
 
 
