@@ -1,7 +1,5 @@
 const booking = require('../models/booking');
 const sendMail = require('../utils/sendMail');
-const Home = require('../models/data');
-const instance = require('../utils/razorpay');
 
 
 module.exports = async function sendBookingReminder(){
@@ -171,7 +169,7 @@ const bookings = await booking.find({status: {$in: ['Confirmed', 'checkedIn']} }
 
     }
 
-    if(sameOrAfterDay(checkOut, today) && !b.checkOutMailSent){
+    if(sameOrAfterDay(today, checkOut) && !b.checkOutMailSent){
         if(b.email || b.user.email){
         await sendMail({
             to: b.email || b.user.email,
