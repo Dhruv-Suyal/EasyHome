@@ -64,7 +64,6 @@ exports.postEditHome = [
         if(!req.isLoggedIn){
             return res.redirect('/login');
         }
-        console.log(req.body.id);
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(422).render(
@@ -154,7 +153,6 @@ exports.sumbitHome = [
         if(!req.isLoggedIn){
             return res.redirect('/login');
         }
-        console.log(req.file);
         const {homeName, pricePerNight, location, description, bedrooms, bathrooms, squareFt} = req.body;
         const errors = validationResult(req);
         if(!errors.isEmpty()){
@@ -167,7 +165,6 @@ exports.sumbitHome = [
         }
         const home = new Home({houseName:homeName, location:location, price: pricePerNight, description: description, bedrooms: bedrooms, bathrooms: bathrooms, squareFt:squareFt, photoUrl:req.file ? req.file.path: null, host: req.session.user._id});
         home.save().then(()=>{
-            console.log('Home update Successfully');
             res.redirect("/host/home-list");
         });
 }
@@ -184,7 +181,6 @@ exports.hostHomeList =(req, res, next)=>{
 }
 
 exports.getMyBookings = async (req, res, next)=>{
-    console.log("Get my bookings");
     if(!req.isLoggedIn) {
         return res.redirect('/login');
     }
@@ -213,8 +209,7 @@ exports.getMyBookings = async (req, res, next)=>{
 
             return obj;
         })
-        console.log(bookings.checkInDate, now);
-        console.log("HostMsg:",hostMsg);
+        
         return res.render('host/host-bookings', {bookings: bookings, hostMsg: hostMsg, pageTittle:'Home Bookings', currentPage:'mybooking', isLoggedIn:req.isLoggedIn, user: req.session.user});
 }
 
@@ -303,7 +298,6 @@ exports.HostBookingDetails = async (req, res, next)=>{
 exports.VerifyGuestQr = async (req, res, next)=>{
     try{
         const {data, bookingId} = req.body;
-        console.log(data);
         const [scannedBookingId, scannedOtp] = data.split("|");
 
         if (!scannedBookingId || !scannedOtp) {
@@ -337,14 +331,12 @@ exports.VerifyGuestQr = async (req, res, next)=>{
         await booking.save();
         return res.json({success:true});
     }catch(e){
-        console.log(e);
         res.json({success:false, message:'Invalid QR'});
     }
 }
 
 exports.VerifyGuestOtp = async (req, res, next)=>{
     const bookingId = req.params.bookingId;
-    console.log(req.body)
     const {otp} = req.body;
     const booking = await Booking.findOne({_id: bookingId});
     if(!booking){
