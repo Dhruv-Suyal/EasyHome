@@ -475,7 +475,6 @@ exports.homeDetails = async (req, res, next)=>{
         else{
             res.render('store/home-detail', {Home:home, favouriteHomes: favouriteHomes, pageTittle:'Home details', currentPage:'home', isLoggedIn:req.isLoggedIn, user: req.session.user});
         }
-        console.log(home);
     })
 }
 
