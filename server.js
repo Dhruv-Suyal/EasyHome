@@ -67,7 +67,7 @@ app.use('/booking/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(multer({storage: multerStorage, fileFilter: filefilter}).single('photoUrl'));
 
@@ -97,12 +97,16 @@ app.use('/', errorPage);
 
 const port = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGO_URL).then(()=>{
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+
+mongoose.connect(process.env.MONGO_URL)
+.then(() => {
     console.log("Mongoose Connected");
-    app.listen(port, ()=>{
-    console.log(`Server is Successfully Created at http://localhost:${port}`);})
-}).catch((err)=>{
-    console.log("Error while connecting mongoose", err);
 })
+.catch((err) => {
+    console.log("Error while connecting mongoose", err);
+});
 
 
